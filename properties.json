@@ -4,11 +4,10 @@
   "version": "0.7.25",
   "description": "CBMPy is a platform for constraint based modelling and analysis. CBMPy implements popular analyses such as FBA, FVA, element/charge balancing, network analysis and model editing as well as advanced methods developed specifically for the ecosystem modelling.",
   "url": "http://cbmpy.sourceforge.net/",
-  "dockerHubImageId": "docker.io/biosimulators/cbmpy:0.7.25",
+  "image": "docker.io/biosimulators/cbmpy:0.7.25",
   "format": {
-    "name": "Docker Image",
-    "version": "1.2",
-    "spec_url": "https://github.com/moby/moby/blob/master/image/spec/v1.2.md"
+    "namespace": "EDAM",
+    "id": "format_3973"
   },
   "authors": [{
     "firstName": "Brett",
