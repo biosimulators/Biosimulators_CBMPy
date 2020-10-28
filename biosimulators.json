@@ -30,7 +30,10 @@
       }]
     }]
   },
-  "license": "GPL-3.0",
+  "license": {
+    "namespace": "SPDX",
+    "id": "GPL-3.0-only"
+  },
   "algorithms": [{
       "id": "fba",
       "name": "flux balance analysis",
