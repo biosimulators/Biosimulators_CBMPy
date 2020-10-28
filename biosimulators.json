@@ -74,7 +74,7 @@
       "parameters": [{
           "kisaoId": {
             "namespace": "KISAO",
-            "id": "KISAO_0000XXX"
+            "id": "KISAO_0000201"
           },
           "name": "solver",
           "type": "string",
@@ -84,7 +84,7 @@
         {
           "kisaoId": {
             "namespace": "KISAO",
-            "id": "KISAO_0000XXX"
+            "id": "KISAO_0000243"
           },
           "name": "method",
           "type": "string",
@@ -151,7 +151,7 @@
         {
           "kisaoId": {
             "namespace": "KISAO",
-            "id": "KISAO_0000XXX"
+            "id": "KISAO_0000201"
           },
           "name": "solver",
           "type": "string",
@@ -161,7 +161,7 @@
         {
           "kisaoId": {
             "namespace": "KISAO",
-            "id": "KISAO_0000XXX"
+            "id": "KISAO_0000243"
           },
           "name": "method",
           "type": "string",
@@ -227,7 +227,7 @@
         {
           "kisaoId": {
             "namespace": "KISAO",
-            "id": "KISAO_0000XXX"
+            "id": "KISAO_0000201"
           },
           "name": "solver",
           "type": "string",
@@ -237,7 +237,7 @@
         {
           "kisaoId": {
             "namespace": "KISAO",
-            "id": "KISAO_0000XXX"
+            "id": "KISAO_0000243"
           },
           "name": "method",
           "type": "string",
@@ -251,7 +251,7 @@
       "name": "parsimonius FBA (minimum number of active fluxes)",
       "kisaoId": {
         "namespace": "KISAO",
-        "id": "KISAO_0000XXX"
+        "id": "KISAO_0000407"
       },
       "modelingFrameworks": [{
         "namespace": "SBO",
@@ -291,7 +291,7 @@
         {
           "kisaoId": {
             "namespace": "KISAO",
-            "id": "KISAO_0000XXX"
+            "id": "KISAO_0000201"
           },
           "name": "solver",
           "type": "string",
@@ -301,7 +301,7 @@
         {
           "kisaoId": {
             "namespace": "KISAO",
-            "id": "KISAO_0000XXX"
+            "id": "KISAO_0000243"
           },
           "name": "method",
           "type": "string",
