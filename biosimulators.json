@@ -15,7 +15,11 @@
     "lastName": "Olivier"
   }],
   "references": {
-    "identifiers": [],
+    "identifiers": [{
+      "namespace": "pypi",
+      "id": "cbmpy",
+      "url": "https://pypi.org/project/cbmpy/"
+    }],
     "citations": [{
       "title": "Modeling and simulation tools: from systems biology to systems medicine",
       "authors": "Brett G. Olivier, Maciej J. Swat & Martijn J. Moné",
