@@ -3,7 +3,7 @@ FROM continuumio/miniconda3:4.8.2
 
 # metadata
 LABEL base_image="continuumio/miniconda3:4.8.2"
-LABEL version="1.0.0"
+LABEL version="0.0.1"
 LABEL software="CBMPy"
 LABEL software.version="0.7.25"
 LABEL about.summary="CBMPy is a platform for constraint based modelling and analysis. CBMPy implements popular analyses such as FBA, FVA, element/charge balancing, network analysis and model editing as well as advanced methods developed specifically for the ecosystem modelling."
