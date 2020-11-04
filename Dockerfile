@@ -1,8 +1,8 @@
 # Base OS
-FROM continuumio/miniconda3:4.8.2
+FROM python:3.7.9-slim-buster
 
 # metadata
-LABEL base_image="continuumio/miniconda3:4.8.2"
+LABEL base_image="python:3.7.9-slim-buster"
 LABEL version="0.0.1"
 LABEL software="CBMPy"
 LABEL software.version="0.7.25"
@@ -15,17 +15,11 @@ LABEL about.tags="BioSimulators,mathematical model,constraint-based model,flux b
 LABEL maintainer="BioSimulators Team <info@biosimulators.org>"
 
 # Install requirements
-ENV CONDA_ENV=py37 \
-    PATH=/opt/conda/envs/${CONDA_ENV}/bin:${PATH}
-RUN conda update -y -n base -c defaults conda \
-    && conda create -y -n ${CONDA_ENV} python=3.7 \
-    && conda install --name ${CONDA_ENV} -y -c bgoli -c SBMLTeam cbmpy \
-    && /bin/bash -c "source activate ${CONDA_ENV}" \
-    && apt-get update -y \
+RUN apt-get update -y \
     && apt-get install -y --no-install-recommends \
         gcc \
         libglpk-dev \
-    && pip install glpk \
+    && pip install glpk numpy python_libsbml scipy sympy \
     && apt-get remove -y \
         gcc \
         libglpk-dev \
