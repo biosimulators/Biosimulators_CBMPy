@@ -15,14 +15,27 @@ LABEL about.tags="BioSimulators,mathematical model,constraint-based model,flux b
 LABEL maintainer="BioSimulators Team <info@biosimulators.org>"
 
 # Install requirements
-RUN conda create -y -n py37 python=3.7 \
-    && conda activate py37
-    && conda install -y -c bgoli -c sbmlteam cbmpy
+ENV CONDA_ENV=py37 \
+    PATH=/opt/conda/envs/${CONDA_ENV}/bin:${PATH}
+RUN conda update -y -n base -c defaults conda \
+    && conda create -y -n ${CONDA_ENV} python=3.7 \
+    && conda install --name ${CONDA_ENV} -y -c bgoli -c SBMLTeam cbmpy \
+    && /bin/bash -c "source activate ${CONDA_ENV}" \
+    && apt-get update -y \
+    && apt-get install -y --no-install-recommends \
+        gcc \
+        libglpk-dev \
+    && pip install glpk \
+    && apt-get remove -y \
+        gcc \
+        libglpk-dev \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy code for command-line interface into image and install it
-COPY . /root/biosimulators_cbmpy
-RUN pip install /root/biosimulators_cbmpy \
-    && rm -rf /root/biosimulators_cbmpy
+COPY . /root/Biosimulators_cbmpy
+RUN pip install /root/Biosimulators_cbmpy \
+    && rm -rf /root/Biosimulators_cbmpy
 
 # Entrypoint
 ENTRYPOINT ["cbmpy"]
