@@ -1,6 +1,12 @@
 # BioSimulators-CBMPy
 BioSimulators-compliant command-line interface to the [CBMPy](http://cbmpy.sourceforge.net/) simulation program.
 
+This command-line interface and Docker image enable users to use CBMPy to execute [COMBINE/OMEX archives](https://combinearchive.org/) that describe one or more simulation experiments (in [SED-ML format](https://sed-ml.org)) of one or more models (in [SBML format](http://sbml.org])).
+
+A list of the algorithms and algorithm parameters supported by CBMPy is available at [BioSimulators](https://biosimulators.org/simulators/cbmpy).
+
+A simple web application and web service for using CBMPy to execute COMBINE/OMEX archives is also available at [runBioSimulations](https://run.biosimulations.org).
+
 ## Contents
 * [Installation](#installation)
 * [Usage](#usage)
