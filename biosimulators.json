@@ -4,7 +4,7 @@
   "version": "0.7.25",
   "description": "CBMPy is a platform for constraint based modelling and analysis. CBMPy implements popular analyses such as FBA, FVA, element/charge balancing, network analysis and model editing as well as advanced methods developed specifically for the ecosystem modelling.",
   "url": "http://cbmpy.sourceforge.net/",
-  "image": "ghcr.io/biosimulators/cbmpy:0.7.25",
+  "image": "ghcr.io/biosimulators/biosimulators_cbmpy/cbmpy:0.7.25",
   "format": {
     "namespace": "EDAM",
     "id": "format_3973"
