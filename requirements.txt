@@ -1,3 +1,5 @@
+Biosimulations_utils
 cbmpy
 cement
-Biosimulations_utils
+numpy
+pandas
