@@ -146,7 +146,7 @@
           },
           "name": "reaction list",
           "type": "string",
-          "value": ""
+          "value": null
         },
         {
           "kisaoId": {
@@ -155,7 +155,7 @@
           },
           "name": "fraction of optimum",
           "type": "float",
-          "value": 1.0
+          "value": "1.0"
         },
         {
           "kisaoId": {
@@ -222,7 +222,7 @@
           },
           "name": "selected reactions",
           "type": "string",
-          "value": ""
+          "value": null
         },
         {
           "kisaoId": {
@@ -231,7 +231,7 @@
           },
           "name": "fraction of optimum",
           "type": "float",
-          "value": 1.0
+          "value": "1.0"
         },
         {
           "kisaoId": {
@@ -286,7 +286,7 @@
           },
           "name": "selected reactions",
           "type": "string",
-          "value": ""
+          "value": null
         },
         {
           "kisaoId": {
@@ -295,7 +295,7 @@
           },
           "name": "fraction of optimum",
           "type": "float",
-          "value": 1.0
+          "value": "1.0"
         },
         {
           "kisaoId": {
