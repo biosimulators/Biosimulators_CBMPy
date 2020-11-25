@@ -157,7 +157,7 @@ def exec_simulation(model_filename, model_sed_urn, simulation, working_dir, out_
             parameter = algorithm['parameters'].get(parameter_change.parameter.kisao_term.id, None)
             if parameter is None:
                 raise NotImplementedError(
-                    "Parameter with KiSAO id '{}' of '{}' is not supported".format(
+                    "Parameter '{}' is not supported for algorithm '{}'".format(
                         parameter_change.parameter.kisao_term.id, simulation.algorithm.kisao_term.id))
             try:
                 solver_args[parameter['arg_name']] = parameter['parser'](parameter_change.value)

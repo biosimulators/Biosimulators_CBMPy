@@ -3,16 +3,19 @@
   "name": "CBMPy",
   "version": "0.7.25",
   "description": "CBMPy is a platform for constraint based modelling and analysis. CBMPy implements popular analyses such as FBA, FVA, element/charge balancing, network analysis and model editing as well as advanced methods developed specifically for the ecosystem modelling.",
-  "url": "http://cbmpy.sourceforge.net/",
-  "image": "ghcr.io/biosimulators/biosimulators_cbmpy/cbmpy:0.7.25",
-  "format": {
-    "namespace": "EDAM",
-    "id": "format_3973"
+  "urls": [{"type": "Home page", "url": "http://cbmpy.sourceforge.net/"}],
+  "image": {
+    "url": "ghcr.io/biosimulators/biosimulators_cbmpy/cbmpy:0.7.25",
+    "format": {
+      "namespace": "EDAM",
+      "id": "format_3973", "version": null
+    }
   },
   "authors": [{
     "firstName": "Brett",
     "middleName": "G.",
-    "lastName": "Olivier"
+    "lastName": "Olivier",
+            "identifiers": []
   }],
   "references": {
     "identifiers": [{
@@ -56,15 +59,15 @@
       }],
       "modelFormats": [{
         "namespace": "EDAM",
-        "id": "format_2585"
+        "id": "format_2585", "version": null
       }],
       "simulationFormats": [{
         "namespace": "EDAM",
-        "id": "format_3685"
+        "id": "format_3685", "version": null
       }],
       "archiveFormats": [{
         "namespace": "EDAM",
-        "id": "format_3686"
+        "id": "format_3686", "version": null
       }],
       "citations": [{
         "title": "What is flux balance analysis?",
@@ -88,7 +91,8 @@
           "name": "solver",
           "type": "string",
           "value": "GLPK",
-          "recommendedRange": ["CPLEX", "GLPK"]
+          "recommendedRange": ["CPLEX", "GLPK"],
+                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         },
         {
           "kisaoId": {
@@ -98,9 +102,11 @@
           "name": "method",
           "type": "string",
           "value": "simplex",
-          "recommendedRange": ["simplex", "interior", "exact", "auto", "primal", "dual", "barrier without crossover", "barrier", "sifting", "concurrent"]
+          "recommendedRange": ["simplex", "interior", "exact", "auto", "primal", "dual", "barrier without crossover", "barrier", "sifting", "concurrent"],
+                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         }
-      ]
+      ],
+      "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
     },
     {
       "id": "fva",
@@ -115,15 +121,15 @@
       }],
       "modelFormats": [{
         "namespace": "EDAM",
-        "id": "format_2585"
+        "id": "format_2585", "version": null
       }],
       "simulationFormats": [{
         "namespace": "EDAM",
-        "id": "format_3685"
+        "id": "format_3685", "version": null
       }],
       "archiveFormats": [{
         "namespace": "EDAM",
-        "id": "format_3686"
+        "id": "format_3686", "version": null
       }],
       "citations": [{
         "title": "The effects of alternate optimal solutions in constraint-based genome-scale metabolic models",
@@ -146,7 +152,9 @@
           },
           "name": "reaction list",
           "type": "string",
-          "value": null
+          "value": null,
+          "recommendedRange": null,
+                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         },
         {
           "kisaoId": {
@@ -155,7 +163,9 @@
           },
           "name": "fraction of optimum",
           "type": "float",
-          "value": "1.0"
+          "value": "1.0",
+          "recommendedRange": null,
+                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         },
         {
           "kisaoId": {
@@ -165,7 +175,8 @@
           "name": "solver",
           "type": "string",
           "value": "GLPK",
-          "recommendedRange": ["CPLEX", "GLPK"]
+          "recommendedRange": ["CPLEX", "GLPK"],
+                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         },
         {
           "kisaoId": {
@@ -175,9 +186,11 @@
           "name": "method",
           "type": "string",
           "value": "simplex",
-          "recommendedRange": ["simplex", "interior", "exact", "auto", "primal", "dual", "barrier without crossover", "barrier", "sifting", "concurrent"]
+          "recommendedRange": ["simplex", "interior", "exact", "auto", "primal", "dual", "barrier without crossover", "barrier", "sifting", "concurrent"],
+                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         }
-      ]
+      ],
+      "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
     },
     {
       "id": "pfba",
@@ -192,15 +205,15 @@
       }],
       "modelFormats": [{
         "namespace": "EDAM",
-        "id": "format_2585"
+        "id": "format_2585", "version": null
       }],
       "simulationFormats": [{
         "namespace": "EDAM",
-        "id": "format_3685"
+        "id": "format_3685", "version": null
       }],
       "archiveFormats": [{
         "namespace": "EDAM",
-        "id": "format_3686"
+        "id": "format_3686", "version": null
       }],
       "citations": [{
         "title": "Omic data from evolved E. coli are consistent with computed optimal growth from genome‐scale models",
@@ -222,7 +235,9 @@
           },
           "name": "selected reactions",
           "type": "string",
-          "value": null
+          "value": null,
+          "recommendedRange": null,
+                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         },
         {
           "kisaoId": {
@@ -231,7 +246,9 @@
           },
           "name": "fraction of optimum",
           "type": "float",
-          "value": "1.0"
+          "value": "1.0",
+          "recommendedRange": null,
+                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         },
         {
           "kisaoId": {
@@ -241,7 +258,8 @@
           "name": "solver",
           "type": "string",
           "value": "GLPK",
-          "recommendedRange": ["CPLEX", "GLPK"]
+          "recommendedRange": ["CPLEX", "GLPK"],
+                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         },
         {
           "kisaoId": {
@@ -251,9 +269,11 @@
           "name": "method",
           "type": "string",
           "value": "simplex",
-          "recommendedRange": ["simplex", "interior", "exact", "auto", "primal", "dual", "barrier without crossover", "barrier", "sifting", "concurrent"]
+          "recommendedRange": ["simplex", "interior", "exact", "auto", "primal", "dual", "barrier without crossover", "barrier", "sifting", "concurrent"],
+                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         }
-      ]
+      ],
+      "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
     },
     {
       "id": "pfba_min_active_fluxes",
@@ -268,15 +288,15 @@
       }],
       "modelFormats": [{
         "namespace": "EDAM",
-        "id": "format_2585"
+        "id": "format_2585", "version": null
       }],
       "simulationFormats": [{
         "namespace": "EDAM",
-        "id": "format_3685"
+        "id": "format_3685", "version": null
       }],
       "archiveFormats": [{
         "namespace": "EDAM",
-        "id": "format_3686"
+        "id": "format_3686", "version": null
       }],
       "citations": [],
       "parameters": [{
@@ -286,7 +306,9 @@
           },
           "name": "selected reactions",
           "type": "string",
-          "value": null
+          "value": null,
+          "recommendedRange": null,
+                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         },
         {
           "kisaoId": {
@@ -295,7 +317,9 @@
           },
           "name": "fraction of optimum",
           "type": "float",
-          "value": "1.0"
+          "value": "1.0",
+          "recommendedRange": null,
+                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         },
         {
           "kisaoId": {
@@ -305,7 +329,8 @@
           "name": "solver",
           "type": "string",
           "value": "CPLEX",
-          "recommendedRange": ["CPLEX"]
+          "recommendedRange": ["CPLEX"],
+                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         },
         {
           "kisaoId": {
@@ -315,15 +340,17 @@
           "name": "method",
           "type": "string",
           "value": "auto",
-          "recommendedRange": ["auto", "primal", "dual", "barrier without crossover", "barrier", "sifting", "concurrent"]
+          "recommendedRange": ["auto", "primal", "dual", "barrier without crossover", "barrier", "sifting", "concurrent"],
+                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         }
-      ]
+      ],
+      "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
     }
   ],
-  "created": "2020-10-26T12:00:00Z",
-  "updated": "2020-10-26T12:00:00Z",
+  "interfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"],
+  "supportedProgrammingLanguages": ["Python"],
   "biosimulators": {
-    "specificationsVersion": "1.0.0",
+    "specificationVersion": "1.0.0",
     "imageVersion": "1.0.0",
     "validated": false
   }
