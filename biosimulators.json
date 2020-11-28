@@ -8,8 +8,9 @@
     "url": "ghcr.io/biosimulators/biosimulators_cbmpy/cbmpy:0.7.25",
     "format": {
       "namespace": "EDAM",
-      "id": "format_3973", "version": null
-    }
+      "id": "format_3973", "version": null, "supportedFeatures": []
+    },
+    "operatingSystemType": "Linux"
   },
   "authors": [{
     "firstName": "Brett",
@@ -59,15 +60,15 @@
       }],
       "modelFormats": [{
         "namespace": "EDAM",
-        "id": "format_2585", "version": null
+        "id": "format_2585", "version": null, "supportedFeatures": []
       }],
       "simulationFormats": [{
         "namespace": "EDAM",
-        "id": "format_3685", "version": null
+        "id": "format_3685", "version": null, "supportedFeatures": []
       }],
       "archiveFormats": [{
         "namespace": "EDAM",
-        "id": "format_3686", "version": null
+        "id": "format_3686", "version": null, "supportedFeatures": []
       }],
       "citations": [{
         "title": "What is flux balance analysis?",
@@ -106,7 +107,21 @@
                     "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         }
       ],
-      "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
+      "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"],
+      "dependencies": [{
+        "name": "GLPK",
+        "version": null,
+        "required": false,
+        "freeNonCommercialLicense": true,
+        "url": "https://www.gnu.org/software/glpk/"
+      },
+      {
+        "name": "CPLEX",
+        "version": null,
+        "required": false,
+        "freeNonCommercialLicense": true,
+        "url": "https://www.ibm.com/analytics/cplex-optimizer"
+      }]
     },
     {
       "id": "fva",
@@ -121,15 +136,15 @@
       }],
       "modelFormats": [{
         "namespace": "EDAM",
-        "id": "format_2585", "version": null
+        "id": "format_2585", "version": null, "supportedFeatures": []
       }],
       "simulationFormats": [{
         "namespace": "EDAM",
-        "id": "format_3685", "version": null
+        "id": "format_3685", "version": null, "supportedFeatures": []
       }],
       "archiveFormats": [{
         "namespace": "EDAM",
-        "id": "format_3686", "version": null
+        "id": "format_3686", "version": null, "supportedFeatures": []
       }],
       "citations": [{
         "title": "The effects of alternate optimal solutions in constraint-based genome-scale metabolic models",
@@ -190,7 +205,21 @@
                     "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         }
       ],
-      "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
+      "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"],
+      "dependencies": [{
+        "name": "GLPK",
+        "version": null,
+        "required": false,
+        "freeNonCommercialLicense": true,
+        "url": "https://www.gnu.org/software/glpk/"
+      },
+      {
+        "name": "CPLEX",
+        "version": null,
+        "required": false,
+        "freeNonCommercialLicense": true,
+        "url": "https://www.ibm.com/analytics/cplex-optimizer"
+      }]
     },
     {
       "id": "pfba",
@@ -205,15 +234,15 @@
       }],
       "modelFormats": [{
         "namespace": "EDAM",
-        "id": "format_2585", "version": null
+        "id": "format_2585", "version": null, "supportedFeatures": []
       }],
       "simulationFormats": [{
         "namespace": "EDAM",
-        "id": "format_3685", "version": null
+        "id": "format_3685", "version": null, "supportedFeatures": []
       }],
       "archiveFormats": [{
         "namespace": "EDAM",
-        "id": "format_3686", "version": null
+        "id": "format_3686", "version": null, "supportedFeatures": []
       }],
       "citations": [{
         "title": "Omic data from evolved E. coli are consistent with computed optimal growth from genome‐scale models",
@@ -273,7 +302,21 @@
                     "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         }
       ],
-      "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
+      "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"],
+      "dependencies": [{
+        "name": "GLPK",
+        "version": null,
+        "required": false,
+        "freeNonCommercialLicense": true,
+        "url": "https://www.gnu.org/software/glpk/"
+      },
+      {
+        "name": "CPLEX",
+        "version": null,
+        "required": false,
+        "freeNonCommercialLicense": true,
+        "url": "https://www.ibm.com/analytics/cplex-optimizer"
+      }]
     },
     {
       "id": "pfba_min_active_fluxes",
@@ -288,15 +331,15 @@
       }],
       "modelFormats": [{
         "namespace": "EDAM",
-        "id": "format_2585", "version": null
+        "id": "format_2585", "version": null, "supportedFeatures": []
       }],
       "simulationFormats": [{
         "namespace": "EDAM",
-        "id": "format_3685", "version": null
+        "id": "format_3685", "version": null, "supportedFeatures": []
       }],
       "archiveFormats": [{
         "namespace": "EDAM",
-        "id": "format_3686", "version": null
+        "id": "format_3686", "version": null, "supportedFeatures": []
       }],
       "citations": [],
       "parameters": [{
@@ -344,11 +387,20 @@
                     "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         }
       ],
-      "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
+      "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"],
+      "dependencies": [{
+        "name": "CPLEX",
+        "version": null,
+        "required": true,
+        "freeNonCommercialLicense": true,
+        "url": "https://www.ibm.com/analytics/cplex-optimizer"
+      }]
     }
   ],
   "interfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"],
-  "supportedProgrammingLanguages": ["Python"],
+  "supportedOperatingSystemTypes": ["platform-independent"],
+  "supportedProgrammingLanguages": [{"namespace": "Linguist", "id": "Python"}],
+  "funding": [],
   "biosimulators": {
     "specificationVersion": "1.0.0",
     "imageVersion": "1.0.0",
