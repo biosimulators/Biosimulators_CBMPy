@@ -107,6 +107,25 @@
                     "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         }
       ],
+      "dependentDimensions": [],
+      "dependentVariableTargetPatterns": [
+        {
+          "variables": "objective value",
+          "targetPattern": "/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective/@value"
+        },
+        {
+          "variables": "reaction fluxes",
+          "targetPattern": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@flux"
+        },
+        {
+          "variables": "reaction reduced costs",
+          "targetPattern": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@reducedCost"
+        },
+        {
+          "variables": "species shadow prices",
+          "targetPattern": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@shadowPrice"
+        }
+      ],
       "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"],
       "dependencies": [{
         "name": "GLPK",
@@ -205,6 +224,17 @@
                     "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         }
       ],
+      "dependentDimensions": [],
+      "dependentVariableTargetPatterns": [
+        {
+          "variables": "minimum reaction fluxes",
+          "targetPattern": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@minFlux"
+        },
+        {
+          "variables": "maximum reaction fluxes",
+          "targetPattern": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@maxFlux"
+        }
+      ],
       "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"],
       "dependencies": [{
         "name": "GLPK",
@@ -257,6 +287,25 @@
           "url": "https://doi.org/10.1038/msb.2010.47"
         }]
       }],
+      "dependentDimensions": [],
+      "dependentVariableTargetPatterns": [
+        {
+          "variables": "objective value",
+          "targetPattern": "/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective/@value"
+        },
+        {
+          "variables": "reaction fluxes",
+          "targetPattern": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@flux"
+        },
+        {
+          "variables": "reaction reduced costs",
+          "targetPattern": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@reducedCost"
+        },
+        {
+          "variables": "species shadow prices",
+          "targetPattern": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@shadowPrice"
+        }
+      ],
       "parameters": [{
           "kisaoId": {
             "namespace": "KISAO",
@@ -387,6 +436,25 @@
                     "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         }
       ],
+      "dependentDimensions": [],
+      "dependentVariableTargetPatterns": [
+        {
+          "variables": "objective value",
+          "targetPattern": "/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective/@value"
+        },
+        {
+          "variables": "reaction fluxes",
+          "targetPattern": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@flux"
+        },
+        {
+          "variables": "reaction reduced costs",
+          "targetPattern": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@reducedCost"
+        },
+        {
+          "variables": "species shadow prices",
+          "targetPattern": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@shadowPrice"
+        }
+      ],
       "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"],
       "dependencies": [{
         "name": "CPLEX",
@@ -404,6 +472,7 @@
   "biosimulators": {
     "specificationVersion": "1.0.0",
     "imageVersion": "1.0.0",
-    "validated": false
+    "validated": false,
+    "validationTests": null
   }
 }
