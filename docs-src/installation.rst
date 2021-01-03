@@ -1,7 +1,7 @@
 Installation instructions
 =========================
 
-BioSimulators-CBMPy is available as command-line program and as a command-line program encapsulated into a Docker image.
+BioSimulators-CBMPy is available as a command-line program and as a command-line program encapsulated into a Docker image.
 
 Command-line program
 --------------------

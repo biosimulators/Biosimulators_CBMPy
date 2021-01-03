@@ -1,9 +1,7 @@
-![Latest version](https://img.shields.io/github/v/tag/biosimulators/Biosimulators_CBMPy)
+[![Latest release](https://img.shields.io/github/v/tag/biosimulators/Biosimulators_CBMPy)](https://github.com/biosimulations/Biosimulators_CBMPy/releases)
 [![PyPI](https://img.shields.io/pypi/v/biosimulators_cbmpy)](https://pypi.org/project/biosimulators_cbmpy/)
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/biosimulators/Biosimulators_CBMPy/workflow-id)](https://github.com/biosimulators/Biosimulators_CBMPy/actions?query=workflow%3Aworkflow-id)
-[![Documentation](https://img.shields.io/github/license/biosimulators/Biosimulators_CBMPy?badges-awesome-green.svg)](https://biosimulators.github.io/Biosimulators_CBMPy/)
-[![Issues](https://img.shields.io/github/issues/biosimulators/Biosimulators_CBMPy)](https://github.com/biosimulators/Biosimulators_CBMPy/issues)
-[![License](https://img.shields.io/github/license/biosimulators/Biosimulators_CBMPy?badges-awesome-green.svg)](https://github.com/biosimulators/Biosimulators_CBMPy/blob/dev/LICENSE)
+[![CI status](https://github.com/biosimulators/Biosimulators_CBMPy/workflows/Continuous%20integration/badge.svg)](https://github.com/biosimulators/Biosimulators_CBMPy/actions?query=workflow%3A%22Continuous+integration%22)
+[![Test coverage](https://codecov.io/gh/biosimulators/Biosimulators_CBMPy/branch/dev/graph/badge.svg)](https://codecov.io/gh/biosimulators/Biosimulators_CBMPy)
 
 # BioSimulators-CBMPy
 BioSimulators-compliant command-line interface to the [CBMPy](http://cbmpy.sourceforge.net/) simulation program.
@@ -26,7 +24,7 @@ A simple web application and web service for using CBMPy to execute COMBINE/OMEX
 
 ### Install Python package
 ```
-pip install git+https://github.com/biosimulators/Biosimulators_CBMPy
+pip install biosimulators-cbmpy
 ```
 
 ### Install Docker image
@@ -55,14 +53,18 @@ optional arguments:
 ```
 
 ### Usage through Docker container
+The entrypoint to the Docker image supports the same command-line interface described above. 
+
+For example, the following command could be used to use the Docker image to execute the COMBINE/OMEX archive `./modeling-study.omex` and save its outputs to `./`.
+
 ```
 docker run \
   --tty \
   --rm \
-  --mount type=bind,source="$(pwd)"/tests/fixtures,target=/root/in,readonly \
-  --mount type=bind,source="$(pwd)"/tests/results,target=/root/out \
+  --mount type=bind,source="$(pwd)",target=/root/in,readonly \
+  --mount type=bind,source="$(pwd)",target=/root/out \
   ghcr.io/biosimulators/cbmpy:latest \
-    -i /root/in/BIOMD0000000297.omex \
+    -i /root/in/modeling-study.omex \
     -o /root/out
 ```
 

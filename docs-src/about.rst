@@ -3,7 +3,7 @@ About BioSimulators-CBMPy
 
 License
 -------
-This package is released under the `MIT License <https://github.com/biosimulators/BioSimulators_CBMPy/blob/dev/LICENSE>`_. CBMPy is released under the `GPL 3.0 License <https://github.com/SystemsBioinformatics/cbmpy/blob/master/LICENCE_GPLv3.txt>`_.
+This package is released under the `MIT License <https://github.com/biosimulators/Biosimulators_CBMPy/blob/dev/LICENSE>`_. CBMPy is released under the `GPL 3.0 License <https://github.com/SystemsBioinformatics/cbmpy/blob/master/LICENCE_GPLv3.txt>`_.
 
 Development team
 ----------------

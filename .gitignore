@@ -2,8 +2,21 @@
 *.egg-info/
 __pycache__/
 *.pyc
+dist/
+build/
+
+# CPLEX files
+*.tmp.lp
+
+# coverage files
+htmlcov/
+.coverage
+coverage.xml
 
 # compiled documentation
+README.rst
+docs/objects.inv
+docs/.buildinfo
 docs/.doctrees/
 docs/_raw_sources/
 docs/_sources/

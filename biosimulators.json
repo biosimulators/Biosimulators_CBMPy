@@ -423,17 +423,6 @@
           "value": "CPLEX",
           "recommendedRange": ["CPLEX"],
                     "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
-        },
-        {
-          "kisaoId": {
-            "namespace": "KISAO",
-            "id": "KISAO_0000552"
-          },
-          "name": "method",
-          "type": "string",
-          "value": "auto",
-          "recommendedRange": ["auto", "primal", "dual", "barrier without crossover", "barrier", "sifting", "concurrent"],
-                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         }
       ],
       "dependentDimensions": [],

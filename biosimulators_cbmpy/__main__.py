@@ -6,52 +6,16 @@
 :License: MIT
 """
 
-from .core import exec_combine_archive
-import biosimulators_cbmpy
-import cement
+from ._version import __version__
+from .core import exec_sedml_docs_in_combine_archive
+from biosimulators_utils.simulator.cli import build_cli
+import cbmpy
 
-
-class BaseController(cement.Controller):
-    """ Base controller for command line application """
-
-    class Meta:
-        label = 'base'
-        description = ("BioSimulators-compliant command-line interface to the "
-                       "CBMPy simulation program <http://cbmpy.sourceforge.net/>.")
-        help = "cbmpy"
-        arguments = [
-            (['-i', '--archive'], dict(type=str,
-                                       required=True,
-                                       help='Path to OMEX file which contains one or more SED-ML-encoded simulation experiments')),
-            (['-o', '--out-dir'], dict(type=str,
-                                       default='.',
-                                       help='Directory to save outputs')),
-            (['-v', '--version'], dict(action='version',
-                                       version=biosimulators_cbmpy.__version__)),
-        ]
-
-    @cement.ex(hide=True)
-    def _default(self):
-        args = self.app.pargs        
-        try:
-            exec_combine_archive(args.archive, args.out_dir)
-        except Exception as exception:
-            raise SystemExit(str(exception)) from exception
-
-
-class App(cement.App):
-    """ Command line application """
-    class Meta:
-        label = 'cbmpy'
-        base_controller = 'base'
-        handlers = [
-            BaseController,
-        ]
+App = build_cli('cbmpy', __version__,
+                'CBMPy', cbmpy.__version__, 'http://cbmpy.sourceforge.net/',
+                exec_sedml_docs_in_combine_archive)
 
 
 def main():
     with App() as app:
         app.run()
-        
-if __name__ == "__main__":
-    main()

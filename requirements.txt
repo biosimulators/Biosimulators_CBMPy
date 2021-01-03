@@ -1,5 +1,6 @@
-Biosimulations_utils
-cbmpy
-cement
+biosimulators_utils >= 0.1.28
+cbmpy <= 0.7.25
+lxml
 numpy
-pandas
+python_libsbml
+glpk
