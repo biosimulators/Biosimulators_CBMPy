@@ -34,8 +34,6 @@ RUN apt-get update -y \
         gcc \
         libglpk-dev \
     && pip install glpk \
-    && apt-get remove -y \
-        gcc \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
