@@ -16,7 +16,8 @@ import types  # noqa: F401
 
 __all__ = [
     'apply_algorithm_change_to_simulation_module_method_args',
-    'get_simulation_method_kw_args',
+    'apply_variables_to_simulation_module_method_args',
+    'get_simulation_method_args',
     'validate_variables',
     'get_results_of_variables',
 ]
@@ -96,15 +97,33 @@ def apply_algorithm_change_to_simulation_module_method_args(method_props, argume
             raise ValueError(msg)
 
         parsed_value = sorted(desired_rxn_ids)
-        module_method_args['kw_args'][parameter_props['arg_name']] = parsed_value
+        module_method_args['args'][parameter_props['arg_name']] = parsed_value
 
     elif arg_kisao_id == 'KISAO_0000531':
         parsed_value *= 100.
 
-        module_method_args['kw_args'][parameter_props['arg_name']] = parsed_value
+        module_method_args['args'][parameter_props['arg_name']] = parsed_value
 
 
-def get_simulation_method_kw_args(method_props, module_method_args):
+def apply_variables_to_simulation_module_method_args(target_x_paths_ids, method_props, variables, module_method_args):
+    """ Encode the desired output variables into arguments to simulation methods
+
+    Args:
+        target_x_paths_ids (:obj:`dict` of :obj:`str` to :obj:`str`): dictionary that maps each XPath to the
+            SBML id of the corresponding model object
+        method_props (:obj:`dict`): properties of the simulation method
+        module_method_args (:obj:`dict`): dictionary representing the desired simulation function,
+            its parent module, and the desired keyword arguments to the function
+        variables (:obj:`list` of :obj:`DataGeneratorVariable`): variables that should be recorded
+    """
+    if method_props['kisao_id'] == 'KISAO_0000526':
+        selected_reactions = set()
+        for variable in variables:
+            selected_reactions.add(target_x_paths_ids[variable.target])
+        module_method_args['args']['selected_reactions'] = sorted(selected_reactions)
+
+
+def get_simulation_method_args(method_props, module_method_args):
     """ Setup the simulation method and its keyword arguments
 
     Args:
@@ -124,8 +143,8 @@ def get_simulation_method_kw_args(method_props, module_method_args):
     solver_method = getattr(solver_module, solver_method_name)
     if module_method_args['optimization_method']:
         opt_method = module_method_args['optimization_method']
-        module_method_args['kw_args']['method'] = solver_props['optimization_methods'].get(opt_method, None)
-        if not module_method_args['kw_args']['method']:
+        module_method_args['args']['method'] = solver_props['optimization_methods'].get(opt_method, None)
+        if not module_method_args['args']['method']:
             msg = ("`{}` is not a supported optimization method of {}. "
                    "{} supports the following optimization methods (KISAO_0000552):\n  - {}").format(
                 opt_method,
@@ -134,9 +153,9 @@ def get_simulation_method_kw_args(method_props, module_method_args):
                 '\n  - '.join('`' + name + '`' for name in sorted(solver_props['optimization_methods'].keys())))
             raise NotImplementedError(msg)
 
-    solver_method_kw_args = dict(**module_method_args['kw_args'], **method_props['default_kw_args'])
+    solver_method_args = dict(**module_method_args['args'], **method_props['default_args'])
 
-    return solver_method, solver_method_kw_args
+    return solver_method, solver_method_args
 
 
 def validate_variables(method, variables):

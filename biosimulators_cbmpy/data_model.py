@@ -246,7 +246,7 @@ KISAO_ALGORITHMS_PARAMETERS_MAP = {
                 'enum': OPTIMIZATION_METHODS,
             },
         },
-        'default_kw_args': {
+        'default_args': {
             'with_reduced_costs': True,
             'return_lp_obj': True,
         },
@@ -280,7 +280,7 @@ KISAO_ALGORITHMS_PARAMETERS_MAP = {
                 'enum': OPTIMIZATION_METHODS,
             },
         },
-        'default_kw_args': {
+        'default_args': {
             'with_reduced_costs': True,
             'return_lp_obj': True,
         },
@@ -309,7 +309,7 @@ KISAO_ALGORITHMS_PARAMETERS_MAP = {
                 'enum': ['CPLEX'],
             }
         },
-        'default_kw_args': {
+        'default_args': {
             'return_lp_obj': True,
         },
         'variables': FBA_DEPENDENT_VARIABLE_TARGETS,
@@ -341,7 +341,7 @@ KISAO_ALGORITHMS_PARAMETERS_MAP = {
                 'enum': OPTIMIZATION_METHODS,
             },
         },
-        'default_kw_args': {
+        'default_args': {
         },
         'variables': FVA_DEPENDENT_VARIABLE_TARGETS,
         'raise_if_simulation_error': lambda module_method_args, solution: None,
@@ -353,7 +353,7 @@ KISAO_ALGORITHMS_PARAMETERS_MAP = {
 DEFAULT_SOLVER_MODULE_FUNCTION_ARGS = {
     'solver': SOLVERS['GLPK'],
     'optimization_method': None,
-    'kw_args': {
+    'args': {
         'quiet': True,
     }
 }

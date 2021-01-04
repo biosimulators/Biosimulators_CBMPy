@@ -1,6 +1,7 @@
 from biosimulators_cbmpy.data_model import SOLVERS, KISAO_ALGORITHMS_PARAMETERS_MAP, DEFAULT_SOLVER_MODULE_FUNCTION_ARGS
 from biosimulators_cbmpy.utils import (apply_algorithm_change_to_simulation_module_method_args,
-                                       get_simulation_method_kw_args,
+                                       apply_variables_to_simulation_module_method_args,
+                                       get_simulation_method_args,
                                        validate_variables, get_results_of_variables)
 from biosimulators_utils.sedml.data_model import AlgorithmParameterChange, DataGeneratorVariable
 from numpy import nan
@@ -20,9 +21,9 @@ class UtilsTestCase(unittest.TestCase):
         method_props = KISAO_ALGORITHMS_PARAMETERS_MAP['KISAO_0000526']
         model = mock.Mock()
         module_method_args = copy.copy(DEFAULT_SOLVER_MODULE_FUNCTION_ARGS)
-        module_method_args['kw_args'] = copy.copy(module_method_args['kw_args'])
+        module_method_args['args'] = copy.copy(module_method_args['args'])
         expected_module_method_args = copy.copy(DEFAULT_SOLVER_MODULE_FUNCTION_ARGS)
-        expected_module_method_args['kw_args'] = copy.copy(expected_module_method_args['kw_args'])
+        expected_module_method_args['args'] = copy.copy(expected_module_method_args['args'])
 
         # other parameters
         argument_change = AlgorithmParameterChange(
@@ -30,7 +31,7 @@ class UtilsTestCase(unittest.TestCase):
             new_value='0.99',
         )
         apply_algorithm_change_to_simulation_module_method_args(method_props, argument_change, model, module_method_args)
-        expected_module_method_args['kw_args']['optPercentage'] = 0.99 * 100
+        expected_module_method_args['args']['optPercentage'] = 0.99 * 100
         self.assertEqual(module_method_args, expected_module_method_args)
 
         argument_change.new_value = 'text'
@@ -85,23 +86,51 @@ class UtilsTestCase(unittest.TestCase):
             new_value='["A", "B"]',
         )
         apply_algorithm_change_to_simulation_module_method_args(method_props, argument_change, model, module_method_args)
-        expected_module_method_args['kw_args']['selected_reactions'] = ['A', 'B']
+        expected_module_method_args['args']['selected_reactions'] = ['A', 'B']
         self.assertEqual(module_method_args, expected_module_method_args)
 
         argument_change.new_value = '["A", "B", "C"]'
         with self.assertRaisesRegex(ValueError, 'not SBML ids of reactions'):
             apply_algorithm_change_to_simulation_module_method_args(method_props, argument_change, model, module_method_args)
 
-    def test_get_simulation_method_kw_args(self):
+    def test_apply_variables_to_simulation_module_method_args(self):
+        method_props = KISAO_ALGORITHMS_PARAMETERS_MAP['KISAO_0000526']
+        variables = [
+            DataGeneratorVariable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='A']/@minFlux"),
+            DataGeneratorVariable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='A']/@maxFlux"),
+            DataGeneratorVariable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='B']/@minFlux"),
+            DataGeneratorVariable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='C']/@maxFlux"),
+        ]
+        target_x_paths_ids = {
+            variables[0].target: 'A',
+            variables[1].target: 'A',
+            variables[2].target: 'B',
+            variables[3].target: 'C',
+        }
+
+        # FVA
+        module_method_args = {'args': {}}
+        expected_module_method_args = {'args': {'selected_reactions': ['A', 'B', 'C']}}
+        apply_variables_to_simulation_module_method_args(target_x_paths_ids, method_props, variables, module_method_args)
+        self.assertEqual(module_method_args, expected_module_method_args)
+
+        # FBA
+        method_props = KISAO_ALGORITHMS_PARAMETERS_MAP['KISAO_0000437']
+        module_method_args = {'args': {}}
+        expected_module_method_args = {'args': {}}
+        apply_variables_to_simulation_module_method_args(target_x_paths_ids, method_props, variables, module_method_args)
+        self.assertEqual(module_method_args, expected_module_method_args)
+
+    def test_get_simulation_method_args(self):
         method_props = KISAO_ALGORITHMS_PARAMETERS_MAP['KISAO_0000437']
 
         module_method_args = copy.copy(DEFAULT_SOLVER_MODULE_FUNCTION_ARGS)
-        module_method_args['kw_args'] = copy.copy(module_method_args['kw_args'])
+        module_method_args['args'] = copy.copy(module_method_args['args'])
 
-        simulation_method, simulation_method_kw_args = get_simulation_method_kw_args(method_props, module_method_args)
+        simulation_method, simulation_method_args = get_simulation_method_args(method_props, module_method_args)
 
         self.assertEqual(simulation_method, cbmpy.CBGLPK.glpk_analyzeModel)
-        self.assertEqual(simulation_method_kw_args, {
+        self.assertEqual(simulation_method_args, {
             'quiet': True,
             'with_reduced_costs': True,
             'return_lp_obj': True,
@@ -109,9 +138,9 @@ class UtilsTestCase(unittest.TestCase):
 
         # set optimization method
         module_method_args['optimization_method'] = 'simplex'
-        simulation_method, simulation_method_kw_args = get_simulation_method_kw_args(method_props, module_method_args)
+        simulation_method, simulation_method_args = get_simulation_method_args(method_props, module_method_args)
         self.assertEqual(simulation_method, cbmpy.CBGLPK.glpk_analyzeModel)
-        self.assertEqual(simulation_method_kw_args, {
+        self.assertEqual(simulation_method_args, {
             'method': 's',
             'quiet': True,
             'with_reduced_costs': True,
@@ -121,7 +150,7 @@ class UtilsTestCase(unittest.TestCase):
         # set optimization method
         module_method_args['optimization_method'] = 'auto'
         with self.assertRaisesRegex(NotImplementedError, 'not a supported optimization method'):
-            simulation_method, simulation_method_kw_args = get_simulation_method_kw_args(method_props, module_method_args)
+            simulation_method, simulation_method_args = get_simulation_method_args(method_props, module_method_args)
 
     def test_validate_variables(self):
         method_props = KISAO_ALGORITHMS_PARAMETERS_MAP['KISAO_0000437']
@@ -197,7 +226,7 @@ class UtilsTestCase(unittest.TestCase):
         model = mock.Mock(
             getActiveObjective=lambda: mock.Mock(id='obj'),
             getObjFuncValue=lambda: 0.8739215069684909,
-            getReactionValues=lambda: {'R_ACALD': 1.250555e-12},            
+            getReactionValues=lambda: {'R_ACALD': 1.250555e-12},
             species=[mock.Mock(id='M_13dpg_c'), mock.Mock(id='M_2pg_c')],
             reactions=[mock.Mock(id='R_ACALD')],
         )
@@ -299,7 +328,7 @@ class UtilsTestCase(unittest.TestCase):
     def test_raise_if_simulation_error(self):
         method_props = KISAO_ALGORITHMS_PARAMETERS_MAP['KISAO_0000437']
         module_method_args = copy.copy(DEFAULT_SOLVER_MODULE_FUNCTION_ARGS)
-        module_method_args['kw_args'] = copy.copy(module_method_args['kw_args'])
+        module_method_args['args'] = copy.copy(module_method_args['args'])
 
         # optimal FBA solution
         solution = mock.Mock(status='opt')

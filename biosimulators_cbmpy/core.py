@@ -8,7 +8,8 @@
 
 from .data_model import KISAO_ALGORITHMS_PARAMETERS_MAP, DEFAULT_SOLVER_MODULE_FUNCTION_ARGS
 from .utils import (apply_algorithm_change_to_simulation_module_method_args,
-                    get_simulation_method_kw_args, validate_variables,
+                    apply_variables_to_simulation_module_method_args,
+                    get_simulation_method_args, validate_variables,
                     get_results_of_variables)
 from biosimulators_utils.combine.exec import exec_sedml_docs_in_archive
 from biosimulators_utils.plot.data_model import PlotFormat  # noqa: F401
@@ -96,18 +97,21 @@ def exec_sed_task(task, variables):
 
     # Set up the the parameters of the algorithm
     module_method_args = copy.copy(DEFAULT_SOLVER_MODULE_FUNCTION_ARGS)
-    module_method_args['kw_args'] = copy.copy(module_method_args['kw_args'])
+    module_method_args['args'] = copy.copy(module_method_args['args'])
     for change in simulation.algorithm.changes:
         apply_algorithm_change_to_simulation_module_method_args(method_props, change, model, module_method_args)
-
-    # Setup simulation function and its keyword arguments
-    simulation_method, simulation_method_kw_args = get_simulation_method_kw_args(method_props, module_method_args)
 
     # validate variables
     validate_variables(method_props, variables)
 
+    # set keyword arguments based on desired outputs
+    apply_variables_to_simulation_module_method_args(target_x_paths_ids, method_props, variables, module_method_args)
+
+    # Setup simulation function and its keyword arguments
+    simulation_method, simulation_method_args = get_simulation_method_args(method_props, module_method_args)
+
     # Simulate the model
-    solution = simulation_method(model, **simulation_method_kw_args)
+    solution = simulation_method(model, **simulation_method_args)
 
     # throw error if status isn't optimal
     method_props['raise_if_simulation_error'](module_method_args, solution)
