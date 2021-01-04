@@ -325,11 +325,6 @@ KISAO_ALGORITHMS_PARAMETERS_MAP = {
         'name': 'FVA: flux variability analysis',
         'function_suffix': 'FluxVariabilityAnalysis',
         'parameters': {
-            'KISAO_0000534': {
-                'name': 'selected reactions',
-                'arg_name': 'selected_reactions',
-                'type': ValueType.list,
-            },
             'KISAO_0000531': {
                 'name': 'optimum percentage',
                 'arg_name': 'optPercentage',

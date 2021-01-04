@@ -79,6 +79,7 @@ class UtilsTestCase(unittest.TestCase):
             mock.Mock(id='A'),
             mock.Mock(id='B'),
         ]
+        method_props = KISAO_ALGORITHMS_PARAMETERS_MAP['KISAO_0000528']
         argument_change = AlgorithmParameterChange(
             kisao_id='KISAO_0000534',
             new_value='["A", "B"]',

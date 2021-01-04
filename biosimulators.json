@@ -200,17 +200,6 @@
       "parameters": [{
           "kisaoId": {
             "namespace": "KISAO",
-            "id": "KISAO_0000534"
-          },
-          "name": "reaction list",
-          "type": "list",
-          "value": null,
-          "recommendedRange": null,
-          "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
-        },
-        {
-          "kisaoId": {
-            "namespace": "KISAO",
             "id": "KISAO_0000531"
           },
           "name": "fraction of optimum",
