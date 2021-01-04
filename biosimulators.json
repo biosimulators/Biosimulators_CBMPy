@@ -185,7 +185,7 @@
             "id": "KISAO_0000534"
           },
           "name": "reaction list",
-          "type": "string",
+          "type": "list",
           "value": null,
           "recommendedRange": null,
                     "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
@@ -312,7 +312,7 @@
             "id": "KISAO_0000534"
           },
           "name": "selected reactions",
-          "type": "string",
+          "type": "list",
           "value": null,
           "recommendedRange": null,
                     "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
@@ -397,7 +397,7 @@
             "id": "KISAO_0000534"
           },
           "name": "selected reactions",
-          "type": "string",
+          "type": "list",
           "value": null,
           "recommendedRange": null,
                     "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
