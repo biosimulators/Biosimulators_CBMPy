@@ -112,9 +112,9 @@ def apply_variables_to_simulation_module_method_args(target_x_paths_ids, method_
         target_x_paths_ids (:obj:`dict` of :obj:`str` to :obj:`str`): dictionary that maps each XPath to the
             SBML id of the corresponding model object
         method_props (:obj:`dict`): properties of the simulation method
+        variables (:obj:`list` of :obj:`DataGeneratorVariable`): variables that should be recorded
         module_method_args (:obj:`dict`): dictionary representing the desired simulation function,
             its parent module, and the desired keyword arguments to the function
-        variables (:obj:`list` of :obj:`DataGeneratorVariable`): variables that should be recorded
     """
     if method_props['kisao_id'] == 'KISAO_0000526':
         selected_reactions = set()
