@@ -3,12 +3,17 @@
   "name": "CBMPy",
   "version": "0.7.25",
   "description": "CBMPy is a platform for constraint based modelling and analysis. CBMPy implements popular analyses such as FBA, FVA, element/charge balancing, network analysis and model editing as well as advanced methods developed specifically for the ecosystem modelling.",
-  "urls": [{"type": "Home page", "url": "http://cbmpy.sourceforge.net/"}],
+  "urls": [{
+    "type": "Home page",
+    "url": "http://cbmpy.sourceforge.net/"
+  }],
   "image": {
     "url": "ghcr.io/biosimulators/biosimulators_cbmpy/cbmpy:0.7.25",
     "format": {
       "namespace": "EDAM",
-      "id": "format_3973", "version": null, "supportedFeatures": []
+      "id": "format_3973",
+      "version": null,
+      "supportedFeatures": []
     },
     "operatingSystemType": "Linux"
   },
@@ -16,19 +21,20 @@
     "firstName": "Brett",
     "middleName": "G.",
     "lastName": "Olivier",
-            "identifiers": []
+    "identifiers": []
   }],
   "references": {
     "identifiers": [{
-      "namespace": "pypi",
-      "id": "cbmpy",
-      "url": "https://pypi.org/project/cbmpy/"
-    },
-    {
-      "namespace": "pypi",
-      "id": "biosimulators-cbmpy",
-      "url": "https://pypi.org/project/biosimulators-cbmpy/"
-    }],
+        "namespace": "pypi",
+        "id": "cbmpy",
+        "url": "https://pypi.org/project/cbmpy/"
+      },
+      {
+        "namespace": "pypi",
+        "id": "biosimulators-cbmpy",
+        "url": "https://pypi.org/project/biosimulators-cbmpy/"
+      }
+    ],
     "citations": [{
       "title": "Modeling and simulation tools: from systems biology to systems medicine",
       "authors": "Brett G. Olivier, Maciej J. Swat & Martijn J. Moné",
@@ -60,15 +66,21 @@
       }],
       "modelFormats": [{
         "namespace": "EDAM",
-        "id": "format_2585", "version": null, "supportedFeatures": []
+        "id": "format_2585",
+        "version": null,
+        "supportedFeatures": []
       }],
       "simulationFormats": [{
         "namespace": "EDAM",
-        "id": "format_3685", "version": "L1V3", "supportedFeatures": []
+        "id": "format_3685",
+        "version": "L1V3",
+        "supportedFeatures": []
       }],
       "archiveFormats": [{
         "namespace": "EDAM",
-        "id": "format_3686", "version": null, "supportedFeatures": []
+        "id": "format_3686",
+        "version": null,
+        "supportedFeatures": []
       }],
       "citations": [{
         "title": "What is flux balance analysis?",
@@ -93,7 +105,7 @@
           "type": "string",
           "value": "GLPK",
           "recommendedRange": ["CPLEX", "GLPK"],
-                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
+          "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         },
         {
           "kisaoId": {
@@ -104,12 +116,11 @@
           "type": "string",
           "value": "simplex",
           "recommendedRange": ["simplex", "interior", "exact", "auto", "primal", "dual", "barrier without crossover", "barrier", "sifting", "concurrent"],
-                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
+          "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         }
       ],
       "dependentDimensions": [],
-      "dependentVariableTargetPatterns": [
-        {
+      "dependentVariableTargetPatterns": [{
           "variables": "objective value",
           "targetPattern": "/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective/@value"
         },
@@ -128,19 +139,20 @@
       ],
       "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"],
       "dependencies": [{
-        "name": "GLPK",
-        "version": null,
-        "required": false,
-        "freeNonCommercialLicense": true,
-        "url": "https://www.gnu.org/software/glpk/"
-      },
-      {
-        "name": "CPLEX",
-        "version": null,
-        "required": false,
-        "freeNonCommercialLicense": true,
-        "url": "https://www.ibm.com/analytics/cplex-optimizer"
-      }]
+          "name": "GLPK",
+          "version": null,
+          "required": false,
+          "freeNonCommercialLicense": true,
+          "url": "https://www.gnu.org/software/glpk/"
+        },
+        {
+          "name": "CPLEX",
+          "version": null,
+          "required": false,
+          "freeNonCommercialLicense": true,
+          "url": "https://www.ibm.com/analytics/cplex-optimizer"
+        }
+      ]
     },
     {
       "id": "fva",
@@ -155,15 +167,21 @@
       }],
       "modelFormats": [{
         "namespace": "EDAM",
-        "id": "format_2585", "version": null, "supportedFeatures": []
+        "id": "format_2585",
+        "version": null,
+        "supportedFeatures": []
       }],
       "simulationFormats": [{
         "namespace": "EDAM",
-        "id": "format_3685", "version": "L1V3", "supportedFeatures": []
+        "id": "format_3685",
+        "version": "L1V3",
+        "supportedFeatures": []
       }],
       "archiveFormats": [{
         "namespace": "EDAM",
-        "id": "format_3686", "version": null, "supportedFeatures": []
+        "id": "format_3686",
+        "version": null,
+        "supportedFeatures": []
       }],
       "citations": [{
         "title": "The effects of alternate optimal solutions in constraint-based genome-scale metabolic models",
@@ -188,7 +206,7 @@
           "type": "list",
           "value": null,
           "recommendedRange": null,
-                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
+          "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         },
         {
           "kisaoId": {
@@ -199,7 +217,7 @@
           "type": "float",
           "value": "1.0",
           "recommendedRange": null,
-                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
+          "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         },
         {
           "kisaoId": {
@@ -210,7 +228,7 @@
           "type": "string",
           "value": "GLPK",
           "recommendedRange": ["CPLEX", "GLPK"],
-                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
+          "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         },
         {
           "kisaoId": {
@@ -221,12 +239,11 @@
           "type": "string",
           "value": "simplex",
           "recommendedRange": ["simplex", "interior", "exact", "auto", "primal", "dual", "barrier without crossover", "barrier", "sifting", "concurrent"],
-                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
+          "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         }
       ],
       "dependentDimensions": [],
-      "dependentVariableTargetPatterns": [
-        {
+      "dependentVariableTargetPatterns": [{
           "variables": "minimum reaction fluxes",
           "targetPattern": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@minFlux"
         },
@@ -237,19 +254,20 @@
       ],
       "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"],
       "dependencies": [{
-        "name": "GLPK",
-        "version": null,
-        "required": false,
-        "freeNonCommercialLicense": true,
-        "url": "https://www.gnu.org/software/glpk/"
-      },
-      {
-        "name": "CPLEX",
-        "version": null,
-        "required": false,
-        "freeNonCommercialLicense": true,
-        "url": "https://www.ibm.com/analytics/cplex-optimizer"
-      }]
+          "name": "GLPK",
+          "version": null,
+          "required": false,
+          "freeNonCommercialLicense": true,
+          "url": "https://www.gnu.org/software/glpk/"
+        },
+        {
+          "name": "CPLEX",
+          "version": null,
+          "required": false,
+          "freeNonCommercialLicense": true,
+          "url": "https://www.ibm.com/analytics/cplex-optimizer"
+        }
+      ]
     },
     {
       "id": "pfba",
@@ -264,15 +282,21 @@
       }],
       "modelFormats": [{
         "namespace": "EDAM",
-        "id": "format_2585", "version": null, "supportedFeatures": []
+        "id": "format_2585",
+        "version": null,
+        "supportedFeatures": []
       }],
       "simulationFormats": [{
         "namespace": "EDAM",
-        "id": "format_3685", "version": "L1V3", "supportedFeatures": []
+        "id": "format_3685",
+        "version": "L1V3",
+        "supportedFeatures": []
       }],
       "archiveFormats": [{
         "namespace": "EDAM",
-        "id": "format_3686", "version": null, "supportedFeatures": []
+        "id": "format_3686",
+        "version": null,
+        "supportedFeatures": []
       }],
       "citations": [{
         "title": "Omic data from evolved E. coli are consistent with computed optimal growth from genome‐scale models",
@@ -288,8 +312,7 @@
         }]
       }],
       "dependentDimensions": [],
-      "dependentVariableTargetPatterns": [
-        {
+      "dependentVariableTargetPatterns": [{
           "variables": "objective value",
           "targetPattern": "/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective/@value"
         },
@@ -315,7 +338,7 @@
           "type": "list",
           "value": null,
           "recommendedRange": null,
-                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
+          "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         },
         {
           "kisaoId": {
@@ -326,7 +349,7 @@
           "type": "float",
           "value": "1.0",
           "recommendedRange": null,
-                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
+          "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         },
         {
           "kisaoId": {
@@ -337,7 +360,7 @@
           "type": "string",
           "value": "GLPK",
           "recommendedRange": ["CPLEX", "GLPK"],
-                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
+          "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         },
         {
           "kisaoId": {
@@ -348,24 +371,25 @@
           "type": "string",
           "value": "simplex",
           "recommendedRange": ["simplex", "interior", "exact", "auto", "primal", "dual", "barrier without crossover", "barrier", "sifting", "concurrent"],
-                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
+          "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         }
       ],
       "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"],
       "dependencies": [{
-        "name": "GLPK",
-        "version": null,
-        "required": false,
-        "freeNonCommercialLicense": true,
-        "url": "https://www.gnu.org/software/glpk/"
-      },
-      {
-        "name": "CPLEX",
-        "version": null,
-        "required": false,
-        "freeNonCommercialLicense": true,
-        "url": "https://www.ibm.com/analytics/cplex-optimizer"
-      }]
+          "name": "GLPK",
+          "version": null,
+          "required": false,
+          "freeNonCommercialLicense": true,
+          "url": "https://www.gnu.org/software/glpk/"
+        },
+        {
+          "name": "CPLEX",
+          "version": null,
+          "required": false,
+          "freeNonCommercialLicense": true,
+          "url": "https://www.ibm.com/analytics/cplex-optimizer"
+        }
+      ]
     },
     {
       "id": "pfba_min_active_fluxes",
@@ -380,15 +404,21 @@
       }],
       "modelFormats": [{
         "namespace": "EDAM",
-        "id": "format_2585", "version": null, "supportedFeatures": []
+        "id": "format_2585",
+        "version": null,
+        "supportedFeatures": []
       }],
       "simulationFormats": [{
         "namespace": "EDAM",
-        "id": "format_3685", "version": "L1V3", "supportedFeatures": []
+        "id": "format_3685",
+        "version": "L1V3",
+        "supportedFeatures": []
       }],
       "archiveFormats": [{
         "namespace": "EDAM",
-        "id": "format_3686", "version": null, "supportedFeatures": []
+        "id": "format_3686",
+        "version": null,
+        "supportedFeatures": []
       }],
       "citations": [],
       "parameters": [{
@@ -400,7 +430,7 @@
           "type": "list",
           "value": null,
           "recommendedRange": null,
-                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
+          "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         },
         {
           "kisaoId": {
@@ -411,7 +441,7 @@
           "type": "float",
           "value": "1.0",
           "recommendedRange": null,
-                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
+          "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         },
         {
           "kisaoId": {
@@ -422,12 +452,11 @@
           "type": "string",
           "value": "CPLEX",
           "recommendedRange": ["CPLEX"],
-                    "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
+          "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         }
       ],
       "dependentDimensions": [],
-      "dependentVariableTargetPatterns": [
-        {
+      "dependentVariableTargetPatterns": [{
           "variables": "objective value",
           "targetPattern": "/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective/@value"
         },
@@ -456,7 +485,10 @@
   ],
   "interfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"],
   "supportedOperatingSystemTypes": ["platform-independent"],
-  "supportedProgrammingLanguages": [{"namespace": "Linguist", "id": "Python"}],
+  "supportedProgrammingLanguages": [{
+    "namespace": "Linguist",
+    "id": "Python"
+  }],
   "funding": [],
   "biosimulators": {
     "specificationVersion": "1.0.0",
