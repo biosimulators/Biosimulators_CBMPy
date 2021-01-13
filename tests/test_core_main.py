@@ -9,6 +9,7 @@
 from biosimulators_cbmpy import __main__
 from biosimulators_cbmpy import core
 from biosimulators_utils.combine import data_model as combine_data_model
+from biosimulators_utils.combine.exceptions import CombineArchiveExecutionError
 from biosimulators_utils.combine.io import CombineArchiveWriter
 from biosimulators_utils.report import data_model as report_data_model
 from biosimulators_utils.report.io import ReportReader
@@ -102,7 +103,7 @@ class CliTestCase(unittest.TestCase):
             'inactive_objective': numpy.nan,
         }
 
-        variable_results = core.exec_sed_task(task, variables)
+        variable_results, _ = core.exec_sed_task(task, variables)
 
         self.assertTrue(set(variable_results.keys()), set(expected_results.keys()))
         for var_id, result in variable_results.items():
@@ -116,7 +117,7 @@ class CliTestCase(unittest.TestCase):
             expected_results['13dpg_c_shadow_price'] = -49.330418
             expected_results['succ_c_shadow_price'] = 3.612827
 
-            variable_results = core.exec_sed_task(task, variables)
+            variable_results, _ = core.exec_sed_task(task, variables)
 
             self.assertTrue(set(variable_results.keys()), set(expected_results.keys()))
             for var_id, result in variable_results.items():
@@ -137,7 +138,7 @@ class CliTestCase(unittest.TestCase):
             'inactive_objective': numpy.nan,
         }
 
-        variable_results = core.exec_sed_task(task, variables)
+        variable_results, _ = core.exec_sed_task(task, variables)
 
         self.assertTrue(set(variable_results.keys()), set(expected_results.keys()))
         for var_id, result in variable_results.items():
@@ -152,7 +153,7 @@ class CliTestCase(unittest.TestCase):
             expected_results['13dpg_c_shadow_price'] = -1.607448
             expected_results['succ_c_shadow_price'] = -2.504309
 
-            variable_results = core.exec_sed_task(task, variables)
+            variable_results, _ = core.exec_sed_task(task, variables)
 
             self.assertTrue(set(variable_results.keys()), set(expected_results.keys()))
             for var_id, result in variable_results.items():
@@ -163,13 +164,13 @@ class CliTestCase(unittest.TestCase):
         task.simulation.algorithm.changes[0].new_value = 'GLPK'
 
         with self.assertRaisesRegex(NotImplementedError, 'not a supported solver for'):
-            variable_results = core.exec_sed_task(task, variables)
+            variable_results, _ = core.exec_sed_task(task, variables)
 
         # pFBA (minimum number of active fluxes), CPLEX
         if cplex:
             task.simulation.algorithm.kisao_id = 'KISAO_0000554'
             task.simulation.algorithm.changes[0].new_value = 'CPLEX'
-            variable_results = core.exec_sed_task(task, variables)
+            variable_results, _ = core.exec_sed_task(task, variables)
 
             expected_results = {
                 'ACONTa_flux': 6.007250e+00,
@@ -182,7 +183,7 @@ class CliTestCase(unittest.TestCase):
                 'inactive_objective': numpy.nan,
             }
 
-            variable_results = core.exec_sed_task(task, variables)
+            variable_results, _ = core.exec_sed_task(task, variables)
 
             self.assertTrue(set(variable_results.keys()), set(expected_results.keys()))
             for var_id, result in variable_results.items():
@@ -208,7 +209,7 @@ class CliTestCase(unittest.TestCase):
                     target='/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id="R_SUCDi"]/@maxFlux'),
             ]
 
-            variable_results = core.exec_sed_task(task, variables)
+            variable_results, _ = core.exec_sed_task(task, variables)
 
             expected_results = {
                 'ACONTa_min_flux': 6.007250e+00,
@@ -248,7 +249,7 @@ class CliTestCase(unittest.TestCase):
         ]
 
         _, archive_filename = self._build_combine_archive(model_changes=model_changes)
-        with self.assertRaisesRegex(ValueError, 'could not be found'):
+        with self.assertRaisesRegex(CombineArchiveExecutionError, 'could not be found'):
             core.exec_sedml_docs_in_combine_archive(archive_filename, self.dirname)
 
     def test_exec_sedml_docs_in_combine_archive_successfully(self):

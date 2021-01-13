@@ -1,7 +1,7 @@
 # Base OS
 FROM python:3.7.9-slim-buster
 
-ARG VERSION="0.1.1"
+ARG VERSION="0.1.2"
 ARG SIMULATOR_VERSION=0.7.25
 
 # metadata
@@ -44,7 +44,8 @@ COPY . /root/Biosimulators_CBMPy
 RUN pip install /root/Biosimulators_CBMPy \
     && rm -rf /root/Biosimulators_CBMPy
 RUN pip install cbmpy==${SIMULATOR_VERSION}
-ENV MPLBACKEND=PDF
+ENV VERBOSE=0 \
+    MPLBACKEND=PDF
 
 # Entrypoint
 ENTRYPOINT ["cbmpy"]
