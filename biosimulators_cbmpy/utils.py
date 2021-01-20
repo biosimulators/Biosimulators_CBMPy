@@ -7,8 +7,8 @@
 """
 
 from .data_model import SOLVERS, OPTIMIZATION_METHODS
-from biosimulators_utils.report.data_model import DataGeneratorVariableResults
-from biosimulators_utils.sedml.data_model import DataGeneratorVariable  # noqa: F401
+from biosimulators_utils.report.data_model import VariableResults
+from biosimulators_utils.sedml.data_model import Variable  # noqa: F401
 from biosimulators_utils.utils.core import validate_str_value, parse_value
 import numpy
 import re
@@ -112,7 +112,7 @@ def apply_variables_to_simulation_module_method_args(target_x_paths_ids, method_
         target_x_paths_ids (:obj:`dict` of :obj:`str` to :obj:`str`): dictionary that maps each XPath to the
             SBML id of the corresponding model object
         method_props (:obj:`dict`): properties of the simulation method
-        variables (:obj:`list` of :obj:`DataGeneratorVariable`): variables that should be recorded
+        variables (:obj:`list` of :obj:`Variable`): variables that should be recorded
         module_method_args (:obj:`dict`): dictionary representing the desired simulation function,
             its parent module, and the desired keyword arguments to the function
     """
@@ -163,7 +163,7 @@ def validate_variables(method, variables):
 
     Args:
         method (:obj:`dict`): properties of desired simulation method
-        variables (:obj:`list` of :obj:`DataGeneratorVariable`): variables that should be recorded
+        variables (:obj:`list` of :obj:`Variable`): variables that should be recorded
     """
     invalid_symbols = set()
     invalid_targets = set()
@@ -212,16 +212,16 @@ def get_results_of_variables(target_x_paths_ids, target_x_paths_fbc_ids, method_
         method_props (:obj:`dict`): properties of desired simulation method
         solver (:obj:`dict`): dictionary representing the desired simulation function,
             its parent module, and the desired keyword arguments to the function
-        variables (:obj:`list` of :obj:`DataGeneratorVariable`): variables that should be recorded
+        variables (:obj:`list` of :obj:`Variable`): variables that should be recorded
         model (:obj:`cbmpy.CBModel.Model`): model
         solution (:obj:`object`): solution of method
 
     Returns:
-        :obj:`DataGeneratorVariableResults`: the results of desired variables
+        :obj:`VariableResults`: the results of desired variables
     """
     all_values = method_props['get_results'](method_props, solver, model, solution)
 
-    variable_results = DataGeneratorVariableResults()
+    variable_results = VariableResults()
     for variable in variables:
         target = variable.target
         for variable_pattern in method_props['variables']:

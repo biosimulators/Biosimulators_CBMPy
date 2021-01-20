@@ -3,7 +3,7 @@ from biosimulators_cbmpy.utils import (apply_algorithm_change_to_simulation_modu
                                        apply_variables_to_simulation_module_method_args,
                                        get_simulation_method_args,
                                        validate_variables, get_results_of_variables)
-from biosimulators_utils.sedml.data_model import AlgorithmParameterChange, DataGeneratorVariable
+from biosimulators_utils.sedml.data_model import AlgorithmParameterChange, Variable
 from numpy import nan
 from unittest import mock
 import cbmpy
@@ -96,10 +96,10 @@ class UtilsTestCase(unittest.TestCase):
     def test_apply_variables_to_simulation_module_method_args(self):
         method_props = KISAO_ALGORITHMS_PARAMETERS_MAP['KISAO_0000526']
         variables = [
-            DataGeneratorVariable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='A']/@minFlux"),
-            DataGeneratorVariable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='A']/@maxFlux"),
-            DataGeneratorVariable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='B']/@minFlux"),
-            DataGeneratorVariable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='C']/@maxFlux"),
+            Variable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='A']/@minFlux"),
+            Variable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='A']/@maxFlux"),
+            Variable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='B']/@minFlux"),
+            Variable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='C']/@maxFlux"),
         ]
         target_x_paths_ids = {
             variables[0].target: 'A',
@@ -155,33 +155,33 @@ class UtilsTestCase(unittest.TestCase):
     def test_validate_variables(self):
         method_props = KISAO_ALGORITHMS_PARAMETERS_MAP['KISAO_0000437']
         variables = [
-            DataGeneratorVariable(target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:id='obj']/@value"),
-            DataGeneratorVariable(target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:type='maximize']/@value"),
-            DataGeneratorVariable(target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:id='obj']"),
-            DataGeneratorVariable(target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective/@value"),
-            DataGeneratorVariable(target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective"),
-            DataGeneratorVariable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']/@flux"),
-            DataGeneratorVariable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']/@reducedCost"),
-            DataGeneratorVariable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@metaid='R_ACALD']/@flux"),
-            DataGeneratorVariable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']"),
-            DataGeneratorVariable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@flux"),
-            DataGeneratorVariable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction"),
-            DataGeneratorVariable(target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@id='M_13dpg_c']/@shadowPrice"),
-            DataGeneratorVariable(target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@metaid='M_13dpg_c']/@shadowPrice"),
-            DataGeneratorVariable(target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@id='M_13dpg_c']"),
-            DataGeneratorVariable(target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species/@shadowPrice"),
-            DataGeneratorVariable(target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species"),
+            Variable(target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:id='obj']/@value"),
+            Variable(target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:type='maximize']/@value"),
+            Variable(target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:id='obj']"),
+            Variable(target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective/@value"),
+            Variable(target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective"),
+            Variable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']/@flux"),
+            Variable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']/@reducedCost"),
+            Variable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@metaid='R_ACALD']/@flux"),
+            Variable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']"),
+            Variable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@flux"),
+            Variable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction"),
+            Variable(target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@id='M_13dpg_c']/@shadowPrice"),
+            Variable(target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@metaid='M_13dpg_c']/@shadowPrice"),
+            Variable(target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@id='M_13dpg_c']"),
+            Variable(target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species/@shadowPrice"),
+            Variable(target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species"),
         ]
         validate_variables(method_props, variables)
 
         variables = [
-            DataGeneratorVariable(symbol='urn:sedml:symbol:time'),
+            Variable(symbol='urn:sedml:symbol:time'),
         ]
         with self.assertRaises(NotImplementedError):
             validate_variables(method_props, variables)
 
         variables = [
-            DataGeneratorVariable(target="/sbml:sbml/sbml:model/sbml:listOfCompartments/sbml:compartment[@id='c']")
+            Variable(target="/sbml:sbml/sbml:model/sbml:listOfCompartments/sbml:compartment[@id='c']")
         ]
         with self.assertRaises(ValueError):
             validate_variables(method_props, variables)
@@ -190,17 +190,17 @@ class UtilsTestCase(unittest.TestCase):
         method_props = KISAO_ALGORITHMS_PARAMETERS_MAP['KISAO_0000437']
         solver = SOLVERS['GLPK']
         variables = [
-            DataGeneratorVariable(id='obj',
+            Variable(id='obj',
                                   target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:id='obj']/@value"),
-            DataGeneratorVariable(id='inactive_obj',
+            Variable(id='inactive_obj',
                                   target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:id='inactive_obj']/@value"),
-            DataGeneratorVariable(id='R_ACALD_flux',
+            Variable(id='R_ACALD_flux',
                                   target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']/@flux"),
-            DataGeneratorVariable(id='R_ACALD_reduced_cost',
+            Variable(id='R_ACALD_reduced_cost',
                                   target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']/@reducedCost"),
-            DataGeneratorVariable(id='M_13dpg_c_shadow_price',
+            Variable(id='M_13dpg_c_shadow_price',
                                   target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@id='M_13dpg_c']/@shadowPrice"),
-            DataGeneratorVariable(id='M_2pg_c_shadow_price',
+            Variable(id='M_2pg_c_shadow_price',
                                   target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@id='M_2pg_c']/@shadowPrice"),
 
         ]
@@ -298,9 +298,9 @@ class UtilsTestCase(unittest.TestCase):
         method_props = KISAO_ALGORITHMS_PARAMETERS_MAP['KISAO_0000526']
         solver = SOLVERS['GLPK']
         variables = [
-            DataGeneratorVariable(id='R_PGI_min_flux',
+            Variable(id='R_PGI_min_flux',
                                   target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_PGI']/@minFlux"),
-            DataGeneratorVariable(id='R_PGI_max_flux',
+            Variable(id='R_PGI_max_flux',
                                   target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_PGI']/@maxFlux"),
         ]
         target_to_id = {
