@@ -494,7 +494,7 @@ class CliTestCase(unittest.TestCase):
         self.assertEqual(sorted(report_results.keys()), sorted([d.id for d in report.data_sets]))
 
         sim = doc.tasks[0].simulation
-        self.assertEqual(len(report_results[report.data_sets[0].id]), 1)
+        self.assertEqual(report_results[report.data_sets[0].id].size, 1)
 
         if sim.algorithm.kisao_id == 'KISAO_0000437':
             expected_results = {
