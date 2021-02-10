@@ -35,6 +35,10 @@ import unittest
 
 class CliTestCase(unittest.TestCase):
     DOCKER_IMAGE = 'ghcr.io/biosimulators/biosimulators_cbmpy/cbmpy:latest'
+    NAMESPACES = {
+        'sbml': 'http://www.sbml.org/sbml/level3/version1/core',
+        'fbc': 'http://www.sbml.org/sbml/level3/version1/fbc/version2',
+    }
 
     def setUp(self):
         self.dirname = tempfile.mkdtemp()
@@ -65,34 +69,42 @@ class CliTestCase(unittest.TestCase):
             sedml_data_model.Variable(
                 id='ACONTa_flux',
                 target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACONTa']/@flux",
+                target_namespaces=self.NAMESPACES,
                 task=task),
             sedml_data_model.Variable(
                 id='TALA_flux',
                 target='/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id="R_TALA"]',
+                target_namespaces=self.NAMESPACES,
                 task=task),
             sedml_data_model.Variable(
                 id='ACALD_reduced_cost',
                 target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']/@reducedCost",
+                target_namespaces=self.NAMESPACES,
                 task=task),
             sedml_data_model.Variable(
                 id='THD2_reduced_cost',
                 target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_THD2']/@reducedCost",
+                target_namespaces=self.NAMESPACES,
                 task=task),
             sedml_data_model.Variable(
                 id='13dpg_c_shadow_price',
                 target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@id='M_13dpg_c']/@shadowPrice",
+                target_namespaces=self.NAMESPACES,
                 task=task),
             sedml_data_model.Variable(
                 id='succ_c_shadow_price',
                 target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@id='M_succ_c']",
+                target_namespaces=self.NAMESPACES,
                 task=task),
             sedml_data_model.Variable(
                 id='active_objective',
                 target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:id='obj']/@value",
+                target_namespaces=self.NAMESPACES,
                 task=task),
             sedml_data_model.Variable(
                 id='inactive_objective',
                 target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:id='inactive_obj']/@value",
+                target_namespaces=self.NAMESPACES,
                 task=task),
         ]
 
@@ -206,18 +218,22 @@ class CliTestCase(unittest.TestCase):
                 sedml_data_model.Variable(
                     id='ACONTa_min_flux',
                     target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACONTa']/@minFlux",
+                    target_namespaces=self.NAMESPACES,
                     task=task),
                 sedml_data_model.Variable(
                     id='ACONTa_max_flux',
                     target='/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id="R_ACONTa"]/@maxFlux',
+                    target_namespaces=self.NAMESPACES,
                     task=task),
                 sedml_data_model.Variable(
                     id='SUCDi_min_flux',
                     target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_SUCDi']/@minFlux",
+                    target_namespaces=self.NAMESPACES,
                     task=task),
                 sedml_data_model.Variable(
                     id='SUCDi_max_flux',
                     target='/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id="R_SUCDi"]/@maxFlux',
+                    target_namespaces=self.NAMESPACES,
                     task=task),
             ]
 
@@ -256,6 +272,7 @@ class CliTestCase(unittest.TestCase):
         model_changes = [
             sedml_data_model.ModelAttributeChange(
                 target="/sbml:sbml/sbml:model/sbml:listOfParameters/sbml:parameter[@id='R_ATPM_lower_bound']/@value",
+                target_namespaces=self.NAMESPACES,
                 new_value="1000",
             ),
         ]
@@ -312,6 +329,7 @@ class CliTestCase(unittest.TestCase):
         model_changes = (model_changes or []) + [
             sedml_data_model.ModelAttributeChange(
                 target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACONTa']/@id",
+                target_namespaces=self.NAMESPACES,
                 new_value="ACONTa"
             ),
         ]
@@ -351,6 +369,7 @@ class CliTestCase(unittest.TestCase):
                     sedml_data_model.Variable(
                         id='var_ACONTa_flux',
                         target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='ACONTa']/@flux",
+                        target_namespaces=self.NAMESPACES,
                         task=doc.tasks[0],
                     ),
                 ],
@@ -362,6 +381,7 @@ class CliTestCase(unittest.TestCase):
                     sedml_data_model.Variable(
                         id='var_TALA_flux',
                         target='/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id="R_TALA"]',
+                        target_namespaces=self.NAMESPACES,
                         task=doc.tasks[0],
                     ),
                 ],
@@ -373,6 +393,7 @@ class CliTestCase(unittest.TestCase):
                     sedml_data_model.Variable(
                         id='var_ACALD_reduced_cost',
                         target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']/@reducedCost",
+                        target_namespaces=self.NAMESPACES,
                         task=doc.tasks[0],
                     ),
                 ],
@@ -384,6 +405,7 @@ class CliTestCase(unittest.TestCase):
                     sedml_data_model.Variable(
                         id='var_THD2_reduced_cost',
                         target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_THD2']/@reducedCost",
+                        target_namespaces=self.NAMESPACES,
                         task=doc.tasks[0],
                     ),
                 ],
@@ -395,6 +417,7 @@ class CliTestCase(unittest.TestCase):
                     sedml_data_model.Variable(
                         id='var_13dpg_c_shadow_price',
                         target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@id='M_13dpg_c']/@shadowPrice",
+                        target_namespaces=self.NAMESPACES,
                         task=doc.tasks[0],
                     ),
                 ],
@@ -406,6 +429,7 @@ class CliTestCase(unittest.TestCase):
                     sedml_data_model.Variable(
                         id='var_succ_c_shadow_price',
                         target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@id='M_succ_c']/@shadowPrice",
+                        target_namespaces=self.NAMESPACES,
                         task=doc.tasks[0],
                     ),
                 ],
@@ -433,6 +457,7 @@ class CliTestCase(unittest.TestCase):
                     sedml_data_model.Variable(
                         id='var_ACONTa_min_flux',
                         target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='ACONTa']/@minFlux",
+                        target_namespaces=self.NAMESPACES,
                         task=doc.tasks[0],
                     ),
                 ],
@@ -444,6 +469,7 @@ class CliTestCase(unittest.TestCase):
                     sedml_data_model.Variable(
                         id='var_ACONTa_max_flux',
                         target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='ACONTa']/@maxFlux",
+                        target_namespaces=self.NAMESPACES,
                         task=doc.tasks[0],
                     ),
                 ],
@@ -455,6 +481,7 @@ class CliTestCase(unittest.TestCase):
                     sedml_data_model.Variable(
                         id='var_SUCDi_min_flux',
                         target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_SUCDi']/@minFlux",
+                        target_namespaces=self.NAMESPACES,
                         task=doc.tasks[0],
                     ),
                 ],
@@ -466,6 +493,7 @@ class CliTestCase(unittest.TestCase):
                     sedml_data_model.Variable(
                         id='var_SUCDi_max_flux',
                         target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_SUCDi']/@maxFlux",
+                        target_namespaces=self.NAMESPACES,
                         task=doc.tasks[0],
                     ),
                 ],

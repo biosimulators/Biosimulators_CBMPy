@@ -16,6 +16,10 @@ import unittest
 
 class UtilsTestCase(unittest.TestCase):
     MODEL_FILENAME = os.path.join(os.path.dirname(__file__), 'fixtures', 'textbook.xml')
+    NAMESPACES = {
+        'sbml': 'http://www.sbml.org/sbml/level3/version1/core',
+        'fbc': 'http://www.sbml.org/sbml/level3/version1/fbc/version2',
+    }
 
     def test_apply_algorithm_change_to_simulation_module_method_args(self):
         method_props = KISAO_ALGORITHMS_PARAMETERS_MAP['KISAO_0000526']
@@ -96,10 +100,14 @@ class UtilsTestCase(unittest.TestCase):
     def test_apply_variables_to_simulation_module_method_args(self):
         method_props = KISAO_ALGORITHMS_PARAMETERS_MAP['KISAO_0000526']
         variables = [
-            Variable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='A']/@minFlux"),
-            Variable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='A']/@maxFlux"),
-            Variable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='B']/@minFlux"),
-            Variable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='C']/@maxFlux"),
+            Variable(target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='A']/@minFlux"),
+            Variable(target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='A']/@maxFlux"),
+            Variable(target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='B']/@minFlux"),
+            Variable(target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='C']/@maxFlux"),
         ]
         target_x_paths_ids = {
             variables[0].target: 'A',
@@ -155,22 +163,38 @@ class UtilsTestCase(unittest.TestCase):
     def test_validate_variables(self):
         method_props = KISAO_ALGORITHMS_PARAMETERS_MAP['KISAO_0000437']
         variables = [
-            Variable(target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:id='obj']/@value"),
-            Variable(target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:type='maximize']/@value"),
-            Variable(target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:id='obj']"),
-            Variable(target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective/@value"),
-            Variable(target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective"),
-            Variable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']/@flux"),
-            Variable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']/@reducedCost"),
-            Variable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@metaid='R_ACALD']/@flux"),
-            Variable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']"),
-            Variable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@flux"),
-            Variable(target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction"),
-            Variable(target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@id='M_13dpg_c']/@shadowPrice"),
-            Variable(target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@metaid='M_13dpg_c']/@shadowPrice"),
-            Variable(target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@id='M_13dpg_c']"),
-            Variable(target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species/@shadowPrice"),
-            Variable(target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species"),
+            Variable(target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:id='obj']/@value"),
+            Variable(target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:type='maximize']/@value"),
+            Variable(target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:id='obj']"),
+            Variable(target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective/@value"),
+            Variable(target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective"),
+            Variable(target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']/@flux"),
+            Variable(target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']/@reducedCost"),
+            Variable(target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@metaid='R_ACALD']/@flux"),
+            Variable(target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']"),
+            Variable(target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@flux"),
+            Variable(target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction"),
+            Variable(target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@id='M_13dpg_c']/@shadowPrice"),
+            Variable(target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@metaid='M_13dpg_c']/@shadowPrice"),
+            Variable(target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@id='M_13dpg_c']"),
+            Variable(target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species/@shadowPrice"),
+            Variable(target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species"),
         ]
         validate_variables(method_props, variables)
 
@@ -181,7 +205,8 @@ class UtilsTestCase(unittest.TestCase):
             validate_variables(method_props, variables)
 
         variables = [
-            Variable(target="/sbml:sbml/sbml:model/sbml:listOfCompartments/sbml:compartment[@id='c']")
+            Variable(target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/sbml:listOfCompartments/sbml:compartment[@id='c']")
         ]
         with self.assertRaises(ValueError):
             validate_variables(method_props, variables)
@@ -191,17 +216,23 @@ class UtilsTestCase(unittest.TestCase):
         solver = SOLVERS['GLPK']
         variables = [
             Variable(id='obj',
-                                  target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:id='obj']/@value"),
+                     target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:id='obj']/@value"),
             Variable(id='inactive_obj',
-                                  target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:id='inactive_obj']/@value"),
+                     target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:id='inactive_obj']/@value"),
             Variable(id='R_ACALD_flux',
-                                  target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']/@flux"),
+                     target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']/@flux"),
             Variable(id='R_ACALD_reduced_cost',
-                                  target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']/@reducedCost"),
+                     target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']/@reducedCost"),
             Variable(id='M_13dpg_c_shadow_price',
-                                  target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@id='M_13dpg_c']/@shadowPrice"),
+                     target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@id='M_13dpg_c']/@shadowPrice"),
             Variable(id='M_2pg_c_shadow_price',
-                                  target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@id='M_2pg_c']/@shadowPrice"),
+                     target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@id='M_2pg_c']/@shadowPrice"),
 
         ]
 
@@ -299,9 +330,11 @@ class UtilsTestCase(unittest.TestCase):
         solver = SOLVERS['GLPK']
         variables = [
             Variable(id='R_PGI_min_flux',
-                                  target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_PGI']/@minFlux"),
+                     target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_PGI']/@minFlux"),
             Variable(id='R_PGI_max_flux',
-                                  target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_PGI']/@maxFlux"),
+                     target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_PGI']/@maxFlux"),
         ]
         target_to_id = {
             variables[0].target: 'R_PGI',
