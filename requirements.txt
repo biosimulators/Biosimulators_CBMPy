@@ -1,4 +1,4 @@
-biosimulators_utils[logging] >= 0.1.38
+biosimulators_utils[logging] >= 0.1.40
 cbmpy <= 0.7.25
 lxml
 numpy
