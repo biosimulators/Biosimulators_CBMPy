@@ -86,7 +86,7 @@ def exec_sed_task(task, variables, log=None):
 
     model = task.model
     sim = task.simulation
-    
+
     raise_errors_warnings(validation.validate_task(task),
                           error_summary='Task `{}` is invalid.'.format(task.id))
     raise_errors_warnings(validation.validate_model_language(task.model.language, ModelLanguage.SBML),
