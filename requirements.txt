@@ -1,5 +1,6 @@
 biosimulators_utils[logging] >= 0.1.54
 cbmpy <= 0.7.25
+kisao
 lxml
 numpy
 python_libsbml
