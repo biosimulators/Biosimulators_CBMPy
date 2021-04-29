@@ -19,8 +19,10 @@ from biosimulators_utils.sedml.data_model import (Task, ModelLanguage, SteadySta
                                                   Variable)
 from biosimulators_utils.sedml import validation
 from biosimulators_utils.sedml.exec import exec_sed_doc
+from biosimulators_utils.simulator.utils import get_algorithm_substitution_policy
 from biosimulators_utils.utils.core import raise_errors_warnings
 from biosimulators_utils.xml.utils import get_namespaces_for_xml_doc
+from kisao.utils import get_preferred_substitute_algorithm_by_ids
 from lxml import etree
 import cbmpy
 import copy
@@ -97,7 +99,7 @@ def exec_sed_task(task, variables, log=None):
                           error_summary='Changes for model `{}` are invalid.'.format(model.id))
     raise_errors_warnings(validation.validate_simulation_type(task.simulation, (SteadyStateSimulation, )),
                           error_summary='{} `{}` is not supported.'.format(sim.__class__.__name__, sim.id))
-    raise_errors_warnings(validation.validate_simulation(task.simulation),
+    raise_errors_warnings(*validation.validate_simulation(task.simulation),
                           error_summary='Simulation `{}` is invalid.'.format(sim.id))
     raise_errors_warnings(*validation.validate_data_generator_variables(variables),
                           error_summary='Data generator variables for task `{}` are invalid.'.format(task.id))
@@ -122,15 +124,10 @@ def exec_sed_task(task, variables, log=None):
     # Set up the algorithm specified by :obj:`task.simulation.algorithm.kisao_id`
     simulation = task.simulation
     algorithm_kisao_id = simulation.algorithm.kisao_id
-    method_props = KISAO_ALGORITHMS_PARAMETERS_MAP.get(algorithm_kisao_id, None)
-    if method_props is None:
-        msg = "".join([
-            "Algorithm with KiSAO id `{}` is not supported. ".format(algorithm_kisao_id),
-            "Algorithm must have one of the following KiSAO ids:\n  - {}".format('\n  - '.join(
-                '`{}`: {}'.format(kisao_id, method_props['name'])
-                for kisao_id, method_props in KISAO_ALGORITHMS_PARAMETERS_MAP.items())),
-        ])
-        raise NotImplementedError(msg)
+    exec_kisao_id = get_preferred_substitute_algorithm_by_ids(
+        algorithm_kisao_id, KISAO_ALGORITHMS_PARAMETERS_MAP.keys(),
+        substitution_policy=get_algorithm_substitution_policy())
+    method_props = KISAO_ALGORITHMS_PARAMETERS_MAP[exec_kisao_id]
 
     # Set up the the parameters of the algorithm
     module_method_args = copy.copy(DEFAULT_SOLVER_MODULE_FUNCTION_ARGS)
@@ -159,7 +156,7 @@ def exec_sed_task(task, variables, log=None):
                                                 variables, model, solution)
 
     # log action
-    log.algorithm = algorithm_kisao_id
+    log.algorithm = exec_kisao_id
     log.simulator_details = {
         'method': simulation_method.__module__ + '.' + simulation_method.__name__,
         'arguments': simulation_method_args,

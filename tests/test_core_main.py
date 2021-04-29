@@ -18,6 +18,7 @@ from biosimulators_utils.simulator.specs import gen_algorithms_from_specs
 from biosimulators_utils.sedml import data_model as sedml_data_model
 from biosimulators_utils.sedml.io import SedmlSimulationWriter
 from biosimulators_utils.sedml.utils import append_all_nested_children_to_doc
+from kisao.exceptions import AlgorithmCannotBeSubstitutedException
 from unittest import mock
 try:
     import cplex
@@ -258,14 +259,14 @@ class CliTestCase(unittest.TestCase):
             ),
             simulation=sedml_data_model.SteadyStateSimulation(
                 algorithm=sedml_data_model.Algorithm(
-                    kisao_id='KISAO_0000001',
+                    kisao_id='KISAO_0000448',
                 ),
             ),
         )
 
         variables = []
 
-        with self.assertRaisesRegex(NotImplementedError, 'not supported. Algorithm must'):
+        with self.assertRaisesRegex(AlgorithmCannotBeSubstitutedException, 'No algorithm can be substituted'):
             core.exec_sed_task(task, variables)
 
     def test_exec_sed_task_error_handling_no_solution(self):

@@ -10,6 +10,7 @@ to solvers methods and their arguments.
 from biosimulators_utils.data_model import ValueType
 from numpy import nan
 import cbmpy  # noqa: F401
+import collections
 import numpy
 try:
     from cbmpy import CBGLPK
@@ -229,8 +230,8 @@ def get_fva_results(method_props, solver, model, solution):
     return results
 
 
-KISAO_ALGORITHMS_PARAMETERS_MAP = {
-    'KISAO_0000437': {
+KISAO_ALGORITHMS_PARAMETERS_MAP = collections.OrderedDict([
+    ('KISAO_0000437', {
         'kisao_id': 'KISAO_0000437',
         'name': 'FBA: flux balance analysis',
         'function_suffix': 'analyzeModel',
@@ -253,8 +254,8 @@ KISAO_ALGORITHMS_PARAMETERS_MAP = {
         'variables': FBA_DEPENDENT_VARIABLE_TARGETS,
         'raise_if_simulation_error': raise_if_fba_simulation_error,
         'get_results': get_fba_results,
-    },
-    'KISAO_0000528': {
+    }),
+    ('KISAO_0000528', {
         'kisao_id': 'KISAO_0000528',
         'name': 'pFBA: parsimonious flux balance analysis (minimum sum of absolute fluxes)',
         'function_suffix': 'MinimizeSumOfAbsFluxes',
@@ -287,8 +288,8 @@ KISAO_ALGORITHMS_PARAMETERS_MAP = {
         'variables': FBA_DEPENDENT_VARIABLE_TARGETS,
         'raise_if_simulation_error': raise_if_fba_simulation_error,
         'get_results': get_fba_results,
-    },
-    'KISAO_0000554': {
+    }),
+    ('KISAO_0000554', {
         'kisao_id': 'KISAO_0000554',
         'name': 'pFBA: parsimonious flux balance analysis (minimum number of active fluxes)',
         'function_suffix': 'MinimizeNumActiveFluxes',
@@ -319,8 +320,8 @@ KISAO_ALGORITHMS_PARAMETERS_MAP = {
         'get_results':
             lambda method_props, solver, model, opt_solution:
                 get_fba_results(method_props, solver, model, opt_solution[1]),
-    },
-    'KISAO_0000526': {
+    }),
+    ('KISAO_0000526', {
         'kisao_id': 'KISAO_0000526',
         'name': 'FVA: flux variability analysis',
         'function_suffix': 'FluxVariabilityAnalysis',
@@ -346,8 +347,8 @@ KISAO_ALGORITHMS_PARAMETERS_MAP = {
         'variables': FVA_DEPENDENT_VARIABLE_TARGETS,
         'raise_if_simulation_error': lambda module_method_args, solution: None,
         'get_results': get_fva_results,
-    }
-}
+    })
+])
 
 
 DEFAULT_SOLVER_MODULE_FUNCTION_ARGS = {
