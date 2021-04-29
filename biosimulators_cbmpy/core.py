@@ -132,8 +132,9 @@ def exec_sed_task(task, variables, log=None):
     # Set up the the parameters of the algorithm
     module_method_args = copy.copy(DEFAULT_SOLVER_MODULE_FUNCTION_ARGS)
     module_method_args['args'] = copy.copy(module_method_args['args'])
-    for change in simulation.algorithm.changes:
-        apply_algorithm_change_to_simulation_module_method_args(method_props, change, model, module_method_args)
+    if exec_kisao_id == algorithm_kisao_id:
+        for change in simulation.algorithm.changes:
+            apply_algorithm_change_to_simulation_module_method_args(method_props, change, model, module_method_args)
 
     # validate variables
     validate_variables(method_props, variables)
