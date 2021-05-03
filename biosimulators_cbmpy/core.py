@@ -141,7 +141,7 @@ def exec_sed_task(task, variables, log=None):
             except NotImplementedError as exception:
                 if (
                     ALGORITHM_SUBSTITUTION_POLICY_LEVELS[alg_substitution_policy]
-                    > ALGORITHM_SUBSTITUTION_POLICY_LEVELS[AlgorithmSubstitutionPolicy.SAME_METHOD]
+                    > ALGORITHM_SUBSTITUTION_POLICY_LEVELS[AlgorithmSubstitutionPolicy.NONE]
                 ):
                     warn('Unsuported algorithm parameter `{}` was ignored:\n  {}'.format(
                         change.kisao_id, str(exception).replace('\n', '\n  ')),
@@ -151,7 +151,7 @@ def exec_sed_task(task, variables, log=None):
             except ValueError as exception:
                 if (
                     ALGORITHM_SUBSTITUTION_POLICY_LEVELS[alg_substitution_policy]
-                    > ALGORITHM_SUBSTITUTION_POLICY_LEVELS[AlgorithmSubstitutionPolicy.SAME_METHOD]
+                    > ALGORITHM_SUBSTITUTION_POLICY_LEVELS[AlgorithmSubstitutionPolicy.NONE]
                 ):
                     warn('Unsuported value `{}` for algorithm parameter `{}` was ignored:\n  {}'.format(
                         change.new_value, change.kisao_id, str(exception).replace('\n', '\n  ')),
