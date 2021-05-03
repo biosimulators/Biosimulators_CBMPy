@@ -20,6 +20,7 @@ __all__ = [
     'get_simulation_method_args',
     'validate_variables',
     'get_results_of_variables',
+    'get_default_solver_module_function_args',
 ]
 
 
@@ -68,7 +69,7 @@ def apply_algorithm_change_to_simulation_module_method_args(method_props, argume
 
         module_method_args['solver'] = SOLVERS[solver_name]
         if not SOLVERS[solver_name]['module']:
-            raise ValueError('{} solver ({}) is not available.'.format(argument_change.new_value, arg_kisao_id))
+            raise ModuleNotFoundError('{} solver ({}) is not available.'.format(argument_change.new_value, arg_kisao_id))
 
     elif arg_kisao_id == 'KISAO_0000552':
         if argument_change.new_value.lower() not in OPTIMIZATION_METHODS:
@@ -100,6 +101,11 @@ def apply_algorithm_change_to_simulation_module_method_args(method_props, argume
         module_method_args['args'][parameter_props['arg_name']] = parsed_value
 
     elif arg_kisao_id == 'KISAO_0000531':
+        if parsed_value < 0. or parsed_value > 1.:
+            msg = 'Optimum fraction (KISAO_0000531) must be greater than or equal to 0 and less than or equal to 1, not {}.'.format(
+                parsed_value)
+            raise ValueError(msg)
+
         parsed_value *= 100.
 
         module_method_args['args'][parameter_props['arg_name']] = parsed_value
@@ -236,3 +242,21 @@ def get_results_of_variables(target_x_paths_ids, target_x_paths_fbc_ids, method_
         variable_results[variable.id] = numpy.array(result)
 
     return variable_results
+
+
+def get_default_solver_module_function_args(algorithm=None):
+    """ Get the default solver and its default arguments for an algorithm
+
+    Args:
+        algorithm (:obj:`str`, optional): KiSAO id of algorithm
+
+    Returns:
+        :obj:`dict`: default solver and default values of its arguments
+    """
+    return {
+        'solver': SOLVERS['GLPK'] if algorithm != 'KISAO_0000554' else SOLVERS['CPLEX'],
+        'optimization_method': None,
+        'args': {
+            'quiet': True,
+        }
+    }

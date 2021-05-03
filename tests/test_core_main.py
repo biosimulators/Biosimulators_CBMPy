@@ -18,8 +18,10 @@ from biosimulators_utils.simulator.specs import gen_algorithms_from_specs
 from biosimulators_utils.sedml import data_model as sedml_data_model
 from biosimulators_utils.sedml.io import SedmlSimulationWriter
 from biosimulators_utils.sedml.utils import append_all_nested_children_to_doc
+from biosimulators_utils.warnings import BioSimulatorsWarning
 from kisao.exceptions import AlgorithmCannotBeSubstitutedException
 from unittest import mock
+import copy
 try:
     import cplex
 except ModuleNotFoundError:
@@ -130,6 +132,16 @@ class CliTestCase(unittest.TestCase):
         for var_id, result in variable_results.items():
             numpy.testing.assert_allclose(result, numpy.array(expected_results[var_id]), rtol=1e-4, atol=1e-8)
 
+        task2 = copy.deepcopy(task)
+        task2.simulation.algorithm.changes[0].new_value = 'not supported'
+        with mock.patch.dict('os.environ', {'ALGORITHM_SUBSTITUTION_POLICY': 'SAME_METHOD'}):
+            with self.assertRaisesRegex(NotImplementedError, 'not a supported solver'):
+                core.exec_sed_task(task2, variables)
+
+        with mock.patch.dict('os.environ', {'ALGORITHM_SUBSTITUTION_POLICY': 'SIMILAR_VARIABLES'}):
+            with self.assertWarnsRegex(BioSimulatorsWarning, 'was ignored'):
+                core.exec_sed_task(task2, variables)
+
         # FBA, CPLEX
         if cplex:
             task.simulation.algorithm.kisao_id = 'KISAO_0000437'
@@ -165,6 +177,22 @@ class CliTestCase(unittest.TestCase):
         for var_id, result in variable_results.items():
             numpy.testing.assert_allclose(result, numpy.array(expected_results[var_id]), rtol=1e-4, atol=1e-8)
 
+        task.simulation.algorithm.changes.append(sedml_data_model.AlgorithmParameterChange(kisao_id='KISAO_0000531', new_value=2))
+        with mock.patch.dict('os.environ', {'ALGORITHM_SUBSTITUTION_POLICY': 'SAME_METHOD'}):
+            with self.assertRaisesRegex(ValueError, 'greater than or equal'):
+                core.exec_sed_task(task, variables)
+        with mock.patch.dict('os.environ', {'ALGORITHM_SUBSTITUTION_POLICY': 'SIMILAR_VARIABLES'}):
+            with self.assertWarnsRegex(BioSimulatorsWarning, 'greater than or equal'):
+                core.exec_sed_task(task, variables)
+
+        task.simulation.algorithm.changes[-1].kisao_id = 'KISAO_9999999'
+        with mock.patch.dict('os.environ', {'ALGORITHM_SUBSTITUTION_POLICY': 'SAME_METHOD'}):
+            with self.assertRaisesRegex(NotImplementedError, 'is not a parameter of'):
+                core.exec_sed_task(task, variables)
+        with mock.patch.dict('os.environ', {'ALGORITHM_SUBSTITUTION_POLICY': 'SIMILAR_VARIABLES'}):
+            with self.assertWarnsRegex(BioSimulatorsWarning, 'ignored'):
+                core.exec_sed_task(task, variables)
+
         # pFBA (minimum sum of fluxes), CPLEX
         if cplex:
             task.simulation.algorithm.kisao_id = 'KISAO_0000528'
@@ -184,8 +212,13 @@ class CliTestCase(unittest.TestCase):
         task.simulation.algorithm.kisao_id = 'KISAO_0000554'
         task.simulation.algorithm.changes[0].new_value = 'GLPK'
 
-        with self.assertRaisesRegex(NotImplementedError, 'not a supported solver for'):
-            variable_results, _ = core.exec_sed_task(task, variables)
+        with mock.patch.dict('os.environ', {'ALGORITHM_SUBSTITUTION_POLICY': 'SAME_METHOD'}):
+            with self.assertRaisesRegex(NotImplementedError, 'not a supported solver for'):
+                core.exec_sed_task(task, variables)
+
+        with mock.patch.dict('os.environ', {'ALGORITHM_SUBSTITUTION_POLICY': 'SIMILAR_VARIABLES'}):
+            with self.assertRaisesRegex(ModuleNotFoundError, 'solver is not available'):
+                core.exec_sed_task(task, variables)
 
         # pFBA (minimum number of active fluxes), CPLEX
         if cplex:

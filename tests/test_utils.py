@@ -1,8 +1,9 @@
-from biosimulators_cbmpy.data_model import SOLVERS, KISAO_ALGORITHMS_PARAMETERS_MAP, DEFAULT_SOLVER_MODULE_FUNCTION_ARGS
+from biosimulators_cbmpy.data_model import SOLVERS, KISAO_ALGORITHMS_PARAMETERS_MAP
 from biosimulators_cbmpy.utils import (apply_algorithm_change_to_simulation_module_method_args,
                                        apply_variables_to_simulation_module_method_args,
                                        get_simulation_method_args,
-                                       validate_variables, get_results_of_variables)
+                                       validate_variables, get_results_of_variables,
+                                       get_default_solver_module_function_args)
 from biosimulators_utils.sedml.data_model import AlgorithmParameterChange, Variable
 from numpy import nan
 from unittest import mock
@@ -24,10 +25,8 @@ class UtilsTestCase(unittest.TestCase):
     def test_apply_algorithm_change_to_simulation_module_method_args(self):
         method_props = KISAO_ALGORITHMS_PARAMETERS_MAP['KISAO_0000526']
         model = mock.Mock()
-        module_method_args = copy.copy(DEFAULT_SOLVER_MODULE_FUNCTION_ARGS)
-        module_method_args['args'] = copy.copy(module_method_args['args'])
-        expected_module_method_args = copy.copy(DEFAULT_SOLVER_MODULE_FUNCTION_ARGS)
-        expected_module_method_args['args'] = copy.copy(expected_module_method_args['args'])
+        module_method_args = get_default_solver_module_function_args()
+        expected_module_method_args = get_default_solver_module_function_args()
 
         # other parameters
         argument_change = AlgorithmParameterChange(
@@ -37,6 +36,10 @@ class UtilsTestCase(unittest.TestCase):
         apply_algorithm_change_to_simulation_module_method_args(method_props, argument_change, model, module_method_args)
         expected_module_method_args['args']['optPercentage'] = 0.99 * 100
         self.assertEqual(module_method_args, expected_module_method_args)
+
+        argument_change.new_value = 2
+        with self.assertRaisesRegex(ValueError, 'less than or equal'):
+            apply_algorithm_change_to_simulation_module_method_args(method_props, argument_change, model, module_method_args)
 
         argument_change.new_value = 'text'
         with self.assertRaisesRegex(ValueError, 'not a valid value'):
@@ -62,7 +65,7 @@ class UtilsTestCase(unittest.TestCase):
 
         SOLVERS['CPLEX']['module'] = None
         argument_change.new_value = 'CPLEX'
-        with self.assertRaisesRegex(ValueError, 'not available'):
+        with self.assertRaisesRegex(ModuleNotFoundError, 'not available'):
             apply_algorithm_change_to_simulation_module_method_args(method_props, argument_change, model, module_method_args)
         SOLVERS['CPLEX']['module'] = True
 
@@ -132,8 +135,7 @@ class UtilsTestCase(unittest.TestCase):
     def test_get_simulation_method_args(self):
         method_props = KISAO_ALGORITHMS_PARAMETERS_MAP['KISAO_0000437']
 
-        module_method_args = copy.copy(DEFAULT_SOLVER_MODULE_FUNCTION_ARGS)
-        module_method_args['args'] = copy.copy(module_method_args['args'])
+        module_method_args = get_default_solver_module_function_args()
 
         simulation_method, simulation_method_args = get_simulation_method_args(method_props, module_method_args)
 
@@ -360,8 +362,7 @@ class UtilsTestCase(unittest.TestCase):
 
     def test_raise_if_simulation_error(self):
         method_props = KISAO_ALGORITHMS_PARAMETERS_MAP['KISAO_0000437']
-        module_method_args = copy.copy(DEFAULT_SOLVER_MODULE_FUNCTION_ARGS)
-        module_method_args['args'] = copy.copy(module_method_args['args'])
+        module_method_args = get_default_solver_module_function_args()
 
         # optimal FBA solution
         solution = mock.Mock(status='opt')

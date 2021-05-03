@@ -27,7 +27,6 @@ __all__ = [
     'FBA_DEPENDENT_VARIABLE_TARGETS',
     'FVA_DEPENDENT_VARIABLE_TARGETS',
     'KISAO_ALGORITHMS_PARAMETERS_MAP',
-    'DEFAULT_SOLVER_MODULE_FUNCTION_ARGS',
 ]
 
 SOLVERS = {
@@ -349,12 +348,3 @@ KISAO_ALGORITHMS_PARAMETERS_MAP = collections.OrderedDict([
         'get_results': get_fva_results,
     })
 ])
-
-
-DEFAULT_SOLVER_MODULE_FUNCTION_ARGS = {
-    'solver': SOLVERS['GLPK'],
-    'optimization_method': None,
-    'args': {
-        'quiet': True,
-    }
-}

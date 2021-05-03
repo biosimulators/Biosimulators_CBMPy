@@ -6,11 +6,12 @@
 :License: MIT
 """
 
-from .data_model import KISAO_ALGORITHMS_PARAMETERS_MAP, DEFAULT_SOLVER_MODULE_FUNCTION_ARGS
+from .data_model import KISAO_ALGORITHMS_PARAMETERS_MAP
 from .utils import (apply_algorithm_change_to_simulation_module_method_args,
                     apply_variables_to_simulation_module_method_args,
                     get_simulation_method_args, validate_variables,
-                    get_results_of_variables)
+                    get_results_of_variables,
+                    get_default_solver_module_function_args)
 from biosimulators_utils.combine.exec import exec_sedml_docs_in_archive
 from biosimulators_utils.log.data_model import CombineArchiveLog, TaskLog  # noqa: F401
 from biosimulators_utils.plot.data_model import PlotFormat  # noqa: F401
@@ -21,11 +22,12 @@ from biosimulators_utils.sedml import validation
 from biosimulators_utils.sedml.exec import exec_sed_doc
 from biosimulators_utils.simulator.utils import get_algorithm_substitution_policy
 from biosimulators_utils.utils.core import raise_errors_warnings
+from biosimulators_utils.warnings import warn, BioSimulatorsWarning
 from biosimulators_utils.xml.utils import get_namespaces_for_xml_doc
+from kisao.data_model import AlgorithmSubstitutionPolicy, ALGORITHM_SUBSTITUTION_POLICY_LEVELS
 from kisao.utils import get_preferred_substitute_algorithm_by_ids
 from lxml import etree
 import cbmpy
-import copy
 import functools
 
 __all__ = [
@@ -124,23 +126,46 @@ def exec_sed_task(task, variables, log=None):
     # Set up the algorithm specified by :obj:`task.simulation.algorithm.kisao_id`
     simulation = task.simulation
     algorithm_kisao_id = simulation.algorithm.kisao_id
+    alg_substitution_policy = get_algorithm_substitution_policy()
     exec_kisao_id = get_preferred_substitute_algorithm_by_ids(
         algorithm_kisao_id, KISAO_ALGORITHMS_PARAMETERS_MAP.keys(),
-        substitution_policy=get_algorithm_substitution_policy())
+        substitution_policy=alg_substitution_policy)
     method_props = KISAO_ALGORITHMS_PARAMETERS_MAP[exec_kisao_id]
 
     # Set up the the parameters of the algorithm
-    module_method_args = copy.copy(DEFAULT_SOLVER_MODULE_FUNCTION_ARGS)
-    module_method_args['args'] = copy.copy(module_method_args['args'])
+    module_method_args = get_default_solver_module_function_args(exec_kisao_id)
     if exec_kisao_id == algorithm_kisao_id:
         for change in simulation.algorithm.changes:
-            apply_algorithm_change_to_simulation_module_method_args(method_props, change, model, module_method_args)
+            try:
+                apply_algorithm_change_to_simulation_module_method_args(method_props, change, model, module_method_args)
+            except NotImplementedError as exception:
+                if (
+                    ALGORITHM_SUBSTITUTION_POLICY_LEVELS[alg_substitution_policy]
+                    > ALGORITHM_SUBSTITUTION_POLICY_LEVELS[AlgorithmSubstitutionPolicy.SAME_METHOD]
+                ):
+                    warn('Unsuported algorithm parameter `{}` was ignored:\n  {}'.format(
+                        change.kisao_id, str(exception).replace('\n', '\n  ')),
+                        BioSimulatorsWarning)
+                else:
+                    raise
+            except ValueError as exception:
+                if (
+                    ALGORITHM_SUBSTITUTION_POLICY_LEVELS[alg_substitution_policy]
+                    > ALGORITHM_SUBSTITUTION_POLICY_LEVELS[AlgorithmSubstitutionPolicy.SAME_METHOD]
+                ):
+                    warn('Unsuported value `{}` for algorithm parameter `{}` was ignored:\n  {}'.format(
+                        change.new_value, change.kisao_id, str(exception).replace('\n', '\n  ')),
+                        BioSimulatorsWarning)
+                else:
+                    raise
 
     # validate variables
     validate_variables(method_props, variables)
 
     # set keyword arguments based on desired outputs
     apply_variables_to_simulation_module_method_args(target_x_paths_ids, method_props, variables, module_method_args)
+    if not module_method_args['solver']['module']:
+        raise ModuleNotFoundError('{} solver is not available.'.format(module_method_args['solver']['name']))
 
     # Setup simulation function and its keyword arguments
     simulation_method, simulation_method_args = get_simulation_method_args(method_props, module_method_args)
