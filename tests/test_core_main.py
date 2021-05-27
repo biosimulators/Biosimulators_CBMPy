@@ -185,7 +185,7 @@ class CliTestCase(unittest.TestCase):
             with self.assertWarnsRegex(BioSimulatorsWarning, 'greater than or equal'):
                 core.exec_sed_task(task, variables)
 
-        task.simulation.algorithm.changes[-1].kisao_id = 'KISAO_9999999'
+        task.simulation.algorithm.changes[-1].kisao_id = 'KISAO_0000211'
         with mock.patch.dict('os.environ', {'ALGORITHM_SUBSTITUTION_POLICY': 'NONE'}):
             with self.assertRaisesRegex(NotImplementedError, 'is not a parameter of'):
                 core.exec_sed_task(task, variables)
