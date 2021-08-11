@@ -48,5 +48,5 @@ ENV VERBOSE=0 \
     MPLBACKEND=PDF
 
 # Entrypoint
-ENTRYPOINT ["cbmpy"]
+ENTRYPOINT ["biosimulators-cbmpy"]
 CMD []

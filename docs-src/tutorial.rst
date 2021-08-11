@@ -38,7 +38,7 @@ The command-line program can be used to execute COMBINE/OMEX archives that descr
 
 .. code-block:: text
 
-    usage: cbmpy [-h] [-d] [-q] -i ARCHIVE [-o OUT_DIR] [-v]
+    usage: biosimulators-cbmpy [-h] [-d] [-q] -i ARCHIVE [-o OUT_DIR] [-v]
 
     BioSimulators-compliant command-line interface to the CBMPy <http://cbmpy.sourceforge.net/> simulation program.
 
@@ -57,7 +57,7 @@ For example, the following command could be used to execute the simulations desc
 
 .. code-block:: text
 
-    cbmpy -i ./modeling-study.omex -o ./
+    biosimulators-cbmpy -i ./modeling-study.omex -o ./
 
 
 Docker image with a command-line entrypoint

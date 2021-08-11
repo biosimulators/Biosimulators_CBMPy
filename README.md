@@ -28,7 +28,7 @@ docker pull ghcr.io/biosimulators/cbmpy
 
 ### Local usage
 ```
-usage: cbmpy [-h] [-d] [-q] -i ARCHIVE [-o OUT_DIR] [-v]
+usage: biosimulators-cbmpy [-h] [-d] [-q] -i ARCHIVE [-o OUT_DIR] [-v]
 
 BioSimulators-compliant command-line interface to the CBMPy simulation program <http://cbmpy.sourceforge.net/>.
 

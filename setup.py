@@ -48,7 +48,7 @@ setuptools.setup(
     ],
     entry_points={
         'console_scripts': [
-            'cbmpy = biosimulators_cbmpy.__main__:main',
+            'biosimulators-cbmpy = biosimulators_cbmpy.__main__:main',
         ],
     },
 )

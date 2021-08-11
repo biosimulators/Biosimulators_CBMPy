@@ -11,7 +11,7 @@ from .core import exec_sedml_docs_in_combine_archive
 from biosimulators_utils.simulator.cli import build_cli
 import cbmpy
 
-App = build_cli('cbmpy', __version__,
+App = build_cli('biosimulators-cbmpy', __version__,
                 'CBMPy', cbmpy.__version__, 'http://cbmpy.sourceforge.net/',
                 exec_sedml_docs_in_combine_archive)
 
