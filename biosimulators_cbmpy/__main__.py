@@ -6,13 +6,13 @@
 :License: MIT
 """
 
+from . import get_simulator_version
 from ._version import __version__
 from .core import exec_sedml_docs_in_combine_archive
 from biosimulators_utils.simulator.cli import build_cli
-import cbmpy
 
 App = build_cli('biosimulators-cbmpy', __version__,
-                'CBMPy', cbmpy.__version__, 'http://cbmpy.sourceforge.net/',
+                'CBMPy', get_simulator_version(), 'http://cbmpy.sourceforge.net/',
                 exec_sedml_docs_in_combine_archive)
 
 
