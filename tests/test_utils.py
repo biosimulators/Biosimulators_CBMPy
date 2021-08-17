@@ -365,14 +365,22 @@ class UtilsTestCase(unittest.TestCase):
         module_method_args = get_default_solver_module_function_args()
 
         # optimal FBA solution
-        solution = mock.Mock(status='opt')
+        model = cbmpy.CBRead.readSBML3FBC(self.MODEL_FILENAME)
+        solution = cbmpy.CBGLPK.glpk_analyzeModel(model, return_lp_obj=True)
         method_props['raise_if_simulation_error'](module_method_args, solution)
 
         # infeasible FBA solution
-        solution.status = 'infeas'
+        model = cbmpy.CBRead.readSBML3FBC(self.MODEL_FILENAME)
+        for bound in model.flux_bounds:
+            bound.setValue(1000)
+        solution = cbmpy.CBGLPK.glpk_analyzeModel(model, return_lp_obj=True)
         with self.assertRaisesRegex(ValueError, ''):
             method_props['raise_if_simulation_error'](module_method_args, solution)
 
         # FVA
         method_props = KISAO_ALGORITHMS_PARAMETERS_MAP['KISAO_0000526']
         method_props['raise_if_simulation_error'](None, None)
+
+        model = cbmpy.CBRead.readSBML3FBC(self.MODEL_FILENAME)
+        solution = cbmpy.CBGLPK.glpk_FluxVariabilityAnalysis(model)
+        method_props['raise_if_simulation_error'](module_method_args, solution)
