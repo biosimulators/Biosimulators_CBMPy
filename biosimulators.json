@@ -17,6 +17,10 @@
     },
     "operatingSystemType": "Linux"
   },
+  "pythonApi": {
+    "package": "biosimulators-cbmpy",
+    "module": "biosimulators_cbmpy"
+  },
   "authors": [{
     "firstName": "Brett",
     "middleName": "G.",
