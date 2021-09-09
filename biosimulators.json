@@ -19,7 +19,8 @@
   },
   "pythonApi": {
     "package": "biosimulators-cbmpy",
-    "module": "biosimulators_cbmpy"
+    "module": "biosimulators_cbmpy",
+      "installationInstructions": "https://docs.biosimulators.org/Biosimulators_CBMPy/installation.html"
   },
   "authors": [{
     "firstName": "Brett",
