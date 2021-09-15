@@ -77,12 +77,47 @@
           "fbc"
         ]
       }],
+      "modelChangePatterns": [
+        {
+          "name": "Change component attributes",
+          "types": ["SedAttributeModelChange", "SedComputeAttributeChangeModelChange", "SedSetValueAttributeModelChange"],
+          "target": {
+            "value": "//*/@*",
+            "grammar": "XPath"
+          }
+        },
+        {
+          "name": "Add components",
+          "types": ["SedAddXmlModelChange"],
+          "target": {
+            "value": "//*",
+            "grammar": "XPath"
+          }
+        },
+        {
+          "name": "Remove components",
+          "types": ["SedRemoveXmlModelChange"],
+          "target": {
+            "value": "//*",
+            "grammar": "XPath"
+          }
+        },
+        {
+          "name": "Change components",
+          "types": ["SedChangeXmlModelChange"],
+          "target": {
+            "value": "//*",
+            "grammar": "XPath"
+          }
+        }        
+      ],
       "simulationFormats": [{
         "namespace": "EDAM",
         "id": "format_3685",
         "version": "L1V3",
         "supportedFeatures": []
       }],
+      "simulationTypes": ["SedSteadyStateSimulation"],
       "archiveFormats": [{
         "namespace": "EDAM",
         "id": "format_3686",
@@ -126,22 +161,22 @@
           "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         }
       ],
-      "dependentDimensions": [],
-      "dependentVariableTargetPatterns": [{
-          "variables": "objective value",
-          "targetPattern": "/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective/@value"
+      "outputDimensions": [],
+      "outputVariablePatterns": [{
+          "name": "objective value",
+          "target": {"value": "/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective/@value", "grammar": "XPath"}
         },
         {
-          "variables": "reaction fluxes",
-          "targetPattern": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@flux"
+          "name": "reaction fluxes",
+          "target": {"value": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@flux", "grammar": "XPath"}
         },
         {
-          "variables": "reaction reduced costs",
-          "targetPattern": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@reducedCost"
+          "name": "reaction reduced costs",
+          "target": {"value": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@reducedCost", "grammar": "XPath"}
         },
         {
-          "variables": "species shadow prices",
-          "targetPattern": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@shadowPrice"
+          "name": "species shadow prices",
+          "target": {"value": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@shadowPrice", "grammar": "XPath"}
         }
       ],
       "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"],
@@ -180,12 +215,47 @@
           "fbc"
         ]
       }],
+      "modelChangePatterns": [
+        {
+          "name": "Change component attributes",
+          "types": ["SedAttributeModelChange", "SedComputeAttributeChangeModelChange", "SedSetValueAttributeModelChange"],
+          "target": {
+            "value": "//*/@*",
+            "grammar": "XPath"
+          }
+        },
+        {
+          "name": "Add components",
+          "types": ["SedAddXmlModelChange"],
+          "target": {
+            "value": "//*",
+            "grammar": "XPath"
+          }
+        },
+        {
+          "name": "Remove components",
+          "types": ["SedRemoveXmlModelChange"],
+          "target": {
+            "value": "//*",
+            "grammar": "XPath"
+          }
+        },
+        {
+          "name": "Change components",
+          "types": ["SedChangeXmlModelChange"],
+          "target": {
+            "value": "//*",
+            "grammar": "XPath"
+          }
+        }        
+      ],
       "simulationFormats": [{
         "namespace": "EDAM",
         "id": "format_3685",
         "version": "L1V3",
         "supportedFeatures": []
       }],
+      "simulationTypes": ["SedSteadyStateSimulation"],
       "archiveFormats": [{
         "namespace": "EDAM",
         "id": "format_3686",
@@ -240,14 +310,14 @@
           "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         }
       ],
-      "dependentDimensions": [],
-      "dependentVariableTargetPatterns": [{
-          "variables": "minimum reaction fluxes",
-          "targetPattern": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@minFlux"
+      "outputDimensions": [],
+      "outputVariablePatterns": [{
+          "name": "minimum reaction fluxes",
+          "target": {"value": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@minFlux", "grammar": "XPath"}
         },
         {
-          "variables": "maximum reaction fluxes",
-          "targetPattern": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@maxFlux"
+          "name": "maximum reaction fluxes",
+          "target": {"value": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@maxFlux", "grammar": "XPath"}
         }
       ],
       "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"],
@@ -286,12 +356,47 @@
           "fbc"
         ]
       }],
+      "modelChangePatterns": [
+        {
+          "name": "Change component attributes",
+          "types": ["SedAttributeModelChange", "SedComputeAttributeChangeModelChange", "SedSetValueAttributeModelChange"],
+          "target": {
+            "value": "//*/@*",
+            "grammar": "XPath"
+          }
+        },
+        {
+          "name": "Add components",
+          "types": ["SedAddXmlModelChange"],
+          "target": {
+            "value": "//*",
+            "grammar": "XPath"
+          }
+        },
+        {
+          "name": "Remove components",
+          "types": ["SedRemoveXmlModelChange"],
+          "target": {
+            "value": "//*",
+            "grammar": "XPath"
+          }
+        },
+        {
+          "name": "Change components",
+          "types": ["SedChangeXmlModelChange"],
+          "target": {
+            "value": "//*",
+            "grammar": "XPath"
+          }
+        }        
+      ],
       "simulationFormats": [{
         "namespace": "EDAM",
         "id": "format_3685",
         "version": "L1V3",
         "supportedFeatures": []
       }],
+      "simulationTypes": ["SedSteadyStateSimulation"],
       "archiveFormats": [{
         "namespace": "EDAM",
         "id": "format_3686",
@@ -311,22 +416,22 @@
           "url": "https://doi.org/10.1038/msb.2010.47"
         }]
       }],
-      "dependentDimensions": [],
-      "dependentVariableTargetPatterns": [{
-          "variables": "objective value",
-          "targetPattern": "/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective/@value"
+      "outputDimensions": [],
+      "outputVariablePatterns": [{
+          "name": "objective value",
+          "target": {"value": "/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective/@value", "grammar": "XPath"}
         },
         {
-          "variables": "reaction fluxes",
-          "targetPattern": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@flux"
+          "name": "reaction fluxes",
+          "target": {"value": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@flux", "grammar": "XPath"}
         },
         {
-          "variables": "reaction reduced costs",
-          "targetPattern": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@reducedCost"
+          "name": "reaction reduced costs",
+          "target": {"value": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@reducedCost", "grammar": "XPath"}
         },
         {
-          "variables": "species shadow prices",
-          "targetPattern": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@shadowPrice"
+          "name": "species shadow prices",
+          "target": {"value": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@shadowPrice", "grammar": "XPath"}
         }
       ],
       "parameters": [{
@@ -410,12 +515,47 @@
           "fbc"
         ]
       }],
+      "modelChangePatterns": [
+        {
+          "name": "Change component attributes",
+          "types": ["SedAttributeModelChange", "SedComputeAttributeChangeModelChange", "SedSetValueAttributeModelChange"],
+          "target": {
+            "value": "//*/@*",
+            "grammar": "XPath"
+          }
+        },
+        {
+          "name": "Add components",
+          "types": ["SedAddXmlModelChange"],
+          "target": {
+            "value": "//*",
+            "grammar": "XPath"
+          }
+        },
+        {
+          "name": "Remove components",
+          "types": ["SedRemoveXmlModelChange"],
+          "target": {
+            "value": "//*",
+            "grammar": "XPath"
+          }
+        },
+        {
+          "name": "Change components",
+          "types": ["SedChangeXmlModelChange"],
+          "target": {
+            "value": "//*",
+            "grammar": "XPath"
+          }
+        }        
+      ],
       "simulationFormats": [{
         "namespace": "EDAM",
         "id": "format_3685",
         "version": "L1V3",
         "supportedFeatures": []
       }],
+      "simulationTypes": ["SedSteadyStateSimulation"],
       "archiveFormats": [{
         "namespace": "EDAM",
         "id": "format_3686",
@@ -457,22 +597,22 @@
           "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"]
         }
       ],
-      "dependentDimensions": [],
-      "dependentVariableTargetPatterns": [{
-          "variables": "objective value",
-          "targetPattern": "/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective/@value"
+      "outputDimensions": [],
+      "outputVariablePatterns": [{
+          "name": "objective value",
+          "target": {"value": "/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective/@value", "grammar": "XPath"}
         },
         {
-          "variables": "reaction fluxes",
-          "targetPattern": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@flux"
+          "name": "reaction fluxes",
+          "target": {"value": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@flux", "grammar": "XPath"}
         },
         {
-          "variables": "reaction reduced costs",
-          "targetPattern": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@reducedCost"
+          "name": "reaction reduced costs",
+          "target": {"value": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@reducedCost", "grammar": "XPath"}
         },
         {
-          "variables": "species shadow prices",
-          "targetPattern": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@shadowPrice"
+          "name": "species shadow prices",
+          "target": {"value": "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@shadowPrice", "grammar": "XPath"}
         }
       ],
       "availableSoftwareInterfaceTypes": ["library", "command-line application", "desktop application", "BioSimulators Docker image"],
