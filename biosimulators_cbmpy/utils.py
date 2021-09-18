@@ -11,7 +11,6 @@ from biosimulators_utils.report.data_model import VariableResults
 from biosimulators_utils.sedml.data_model import Variable  # noqa: F401
 from biosimulators_utils.utils.core import validate_str_value, parse_value
 import numpy
-import re
 import types  # noqa: F401
 
 __all__ = [
@@ -111,22 +110,21 @@ def apply_algorithm_change_to_simulation_module_method_args(method_props, argume
         module_method_args['args'][parameter_props['arg_name']] = parsed_value
 
 
-def apply_variables_to_simulation_module_method_args(target_x_paths_ids, method_props, variables, module_method_args):
+def apply_variables_to_simulation_module_method_args(target_sbml_id_map, method_props, variables, solver_method_args):
     """ Encode the desired output variables into arguments to simulation methods
 
     Args:
-        target_x_paths_ids (:obj:`dict` of :obj:`str` to :obj:`str`): dictionary that maps each XPath to the
+        target_sbml_id_map (:obj:`dict` of :obj:`str` to :obj:`str`): dictionary that maps each XPath to the
             SBML id of the corresponding model object
         method_props (:obj:`dict`): properties of the simulation method
         variables (:obj:`list` of :obj:`Variable`): variables that should be recorded
-        module_method_args (:obj:`dict`): dictionary representing the desired simulation function,
-            its parent module, and the desired keyword arguments to the function
+        solver_method_args (:obj:`dict`): keyword arguments for the simulation method
     """
-    if method_props['kisao_id'] == 'KISAO_0000526':
+    if method_props['function_suffix'] == 'FluxVariabilityAnalysis':
         selected_reactions = set()
         for variable in variables:
-            selected_reactions.add(target_x_paths_ids[variable.target])
-        module_method_args['args']['selected_reactions'] = sorted(selected_reactions)
+            selected_reactions.add(target_sbml_id_map[variable.target])
+        solver_method_args['selected_reactions'] = sorted(selected_reactions)
 
 
 def get_simulation_method_args(method_props, module_method_args):
@@ -164,13 +162,24 @@ def get_simulation_method_args(method_props, module_method_args):
     return solver_method, solver_method_args
 
 
-def validate_variables(method, variables):
+def validate_variables(model, method, variables, target_sbml_id_map, target_sbml_fbc_id_map, sbml_fbc_uri):
     """ Validate the desired output variables of a simulation
 
     Args:
+        model (:obj:`cbmpy.CBModel.Model`): model
         method (:obj:`dict`): properties of desired simulation method
         variables (:obj:`list` of :obj:`Variable`): variables that should be recorded
+        target_sbml_id_map (:obj:`dict` of :obj:`str` to :obj:`str`): dictionary that maps each XPath to the
+            SBML id of the corresponding model object
+        target_sbml_fbc_id_map (:obj:`dict` of :obj:`str` to :obj:`str`): dictionary that maps each XPath to the
+            SBML-FBC id of the corresponding model object
+        sbml_fbc_uri (:obj:`str`): URI for SBML FBC package
     """
+    possible_target_results_path_map = set()
+    for variable_pattern in method['variables']:
+        for sbml_id, fbc_id, attr, _, _ in variable_pattern['get_target_results_paths'](model):
+            possible_target_results_path_map.add((sbml_id, fbc_id, attr))
+
     invalid_symbols = set()
     invalid_targets = set()
     for variable in variables:
@@ -178,13 +187,18 @@ def validate_variables(method, variables):
             invalid_symbols.add(variable.symbol)
 
         else:
-            valid = False
-            for variable_pattern in method['variables']:
-                if re.match(variable_pattern['target'], variable.target):
-                    valid = True
-                    break
+            valid = True
 
-            if not valid:
+            target = variable.target
+            variable_target_id = target_sbml_id_map.get(target, None)
+            variable_target_fbc_id = target_sbml_fbc_id_map.get(target, None)
+            target_attr = target.partition('/@')[2] or None
+            if target_attr:
+                target_ns, _, target_attr = target_attr.rpartition(':')
+                if target_ns and variable.target_namespaces.get(target_ns, None) != sbml_fbc_uri:
+                    valid = False
+
+            if not valid or (variable_target_id, variable_target_fbc_id, target_attr) not in possible_target_results_path_map:
                 invalid_targets.add(variable.target)
 
     if invalid_symbols:
@@ -206,15 +220,44 @@ def validate_variables(method, variables):
         raise ValueError(msg)
 
 
-def get_results_of_variables(target_x_paths_ids, target_x_paths_fbc_ids, method_props, solver,
+def get_results_paths_for_variables(model, method_props, variables, target_sbml_id_map, target_sbml_fbc_id_map):
+    """ Get the path to results for the desired variables
+
+    Args:
+        model (:obj:`cbmpy.CBModel.Model`): model
+        method_props (:obj:`dict`): properties of desired simulation method
+        variables (:obj:`list` of :obj:`Variable`): variables that should be recorded
+        target_sbml_id_map (:obj:`dict` of :obj:`str` to :obj:`str`): dictionary that maps each XPath to the
+            SBML id of the corresponding model object
+        target_sbml_fbc_id_map (:obj:`dict` of :obj:`str` to :obj:`str`): dictionary that maps each XPath to the
+            SBML-FBC id of the corresponding model object
+
+    Returns:
+        :obj:`dict`: path to results of desired variables
+    """
+    possible_target_results_path_map = {}
+    for variable_pattern in method_props['variables']:
+        for sbml_id, fbc_id, attr, result_type, result_name in variable_pattern['get_target_results_paths'](model):
+            possible_target_results_path_map[(sbml_id, fbc_id, attr)] = (result_type, result_name)
+
+    target_results_path_map = {}
+    for variable in variables:
+        target = variable.target
+        variable_target_id = target_sbml_id_map[target]
+        variable_target_fbc_id = target_sbml_fbc_id_map[target]
+        target_attr = target.partition('/@')[2].rpartition(':')[2] or None
+        target_results_path_map[variable.target] = possible_target_results_path_map[(
+            variable_target_id, variable_target_fbc_id, target_attr)]
+
+    return target_results_path_map
+
+
+def get_results_of_variables(target_results_path_map, method_props, solver,
                              variables, model, solution):
     """ Get the results of the desired variables
 
     Args:
-        target_x_paths_ids (:obj:`dict` of :obj:`str` to :obj:`str`): dictionary that maps each XPath to the
-            SBML id of the corresponding model object
-        target_x_paths_fbc_ids (:obj:`dict` of :obj:`str` to :obj:`str`): dictionary that maps each XPath to the
-            SBML-FBC id of the corresponding model object
+        target_results_path_map (:obj:`dict`): path to results of desired variables
         method_props (:obj:`dict`): properties of desired simulation method
         solver (:obj:`dict`): dictionary representing the desired simulation function,
             its parent module, and the desired keyword arguments to the function
@@ -229,16 +272,8 @@ def get_results_of_variables(target_x_paths_ids, target_x_paths_fbc_ids, method_
 
     variable_results = VariableResults()
     for variable in variables:
-        target = variable.target
-        for variable_pattern in method_props['variables']:
-            if re.match(variable_pattern['target'], target):
-                variable_target_id = target_x_paths_ids[target]
-                variable_target_fbc_id = target_x_paths_fbc_ids[target]
-                result = variable_pattern['get_result'](variable_target_id,
-                                                        variable_target_fbc_id, all_values)
-
-                break
-
+        result_type, result_name = target_results_path_map[variable.target]
+        result = all_values[result_type].get(result_name, numpy.nan)
         variable_results[variable.id] = numpy.array(result)
 
     return variable_results

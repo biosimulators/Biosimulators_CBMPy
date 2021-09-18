@@ -8,7 +8,6 @@ to solvers methods and their arguments.
 """
 
 from biosimulators_utils.data_model import ValueType
-from numpy import nan
 import cbmpy  # noqa: F401
 import collections
 import numpy
@@ -24,8 +23,8 @@ except ModuleNotFoundError:
 __all__ = [
     'SOLVERS',
     'OPTIMIZATION_METHODS',
-    'FBA_DEPENDENT_VARIABLE_TARGETS',
-    'FVA_DEPENDENT_VARIABLE_TARGETS',
+    'FBA_OUTPUT_VARIABLE_TARGETS',
+    'FVA_OUTPUT_VARIABLE_TARGETS',
     'KISAO_ALGORITHMS_PARAMETERS_MAP',
 ]
 
@@ -69,57 +68,86 @@ OPTIMIZATION_METHODS = set([
     'exact',
 ])
 
-FBA_DEPENDENT_VARIABLE_TARGETS = [
+FBA_OUTPUT_VARIABLE_TARGETS = [
     {
         'description': 'objective value',
         'target_type': 'objective',
         'target': r'^/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective(\[.*?\])?(/@value)?$',
-        'get_result':
-            lambda el_id, el_fbc_id, solution:
-                solution['objective_value'].get(el_fbc_id, nan),
+        'get_target_results_paths': lambda model:
+            (
+                [
+                    (None, objective.id, None, 'objective_value', objective.id)
+                    for objective in model.objectives
+                ] +
+                [
+                    (None, objective.id, 'value', 'objective_value', objective.id)
+                    for objective in model.objectives
+                ]
+            ),
     },
     {
         'description': 'reaction flux',
         'target_type': 'reaction',
         'target': r'^/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction(\[.*?\])?(/@flux)?$',
-        'get_result':
-            lambda el_id, el_fbc_id, solution:
-                solution['reaction_flux'].get(el_id),
+        'get_target_results_paths': lambda model:
+            (
+                [
+                    (reaction.id, None, None, 'reaction_flux', reaction.id)
+                    for reaction in model.reactions
+                ] +
+                [
+                    (reaction.id, None, 'flux', 'reaction_flux', reaction.id)
+                    for reaction in model.reactions
+                ]
+            ),
     },
     {
         'description': 'reaction reduced cost',
         'target_type': 'reaction',
         'target': r'^/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction(\[.*?\])?/@reducedCost$',
-        'get_result':
-            lambda el_id, el_fbc_id, solution:
-                solution['reaction_reduced_cost'][el_id],
+        'get_target_results_paths': lambda model:
+            [
+                (reaction.id, None, 'reducedCost', 'reaction_reduced_cost', reaction.id)
+                for reaction in model.reactions
+            ],
     },
     {
         'description': 'species shadow price',
         'target_type': 'species',
         'target': r'^/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species(\[.*?\])?(/@shadowPrice)?$',
-        'get_result':
-            lambda el_id, el_fbc_id, solution:
-                solution['species_shadow_price'][el_id],
+        'get_target_results_paths': lambda model:
+            (
+                [
+                    (specie.id, None, None, 'species_shadow_price', specie.id)
+                    for specie in model.species
+                ] + [
+                    (specie.id, None, 'shadowPrice', 'species_shadow_price', specie.id)
+                    for specie in model.species
+                ]
+            ),
     },
 ]
 
-FVA_DEPENDENT_VARIABLE_TARGETS = [
+FVA_OUTPUT_VARIABLE_TARGETS = [
     {
         'description': 'minimum reaction flux',
         'target_type': 'reaction',
         'target': r'^/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction(\[.*?\])?/@minFlux?$',
-        'get_result':
-            lambda el_id, el_fbc_id, solution:
-                solution['reaction_min_flux'][el_id],
+        'get_target_results_paths': lambda model:
+            [
+                (reaction.id, None, 'minFlux', 'reaction_min_flux', reaction.id)
+                for reaction in model.reactions
+            ],
     },
     {
         'description': 'maximum reaction flux',
         'target_type': 'reaction',
         'target': r'^/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction(\[.*?\])?/@maxFlux?$',
-        'get_result':
-            lambda el_id, el_fbc_id, solution:
-                solution['reaction_max_flux'][el_id],
+        'get_target_results_paths': lambda model:
+            [
+                (reaction.id, None, 'maxFlux', 'reaction_max_flux', reaction.id)
+                for reaction in model.reactions
+            ],
     },
 ]
 
@@ -250,7 +278,7 @@ KISAO_ALGORITHMS_PARAMETERS_MAP = collections.OrderedDict([
             'with_reduced_costs': True,
             'return_lp_obj': True,
         },
-        'variables': FBA_DEPENDENT_VARIABLE_TARGETS,
+        'variables': FBA_OUTPUT_VARIABLE_TARGETS,
         'raise_if_simulation_error': raise_if_fba_simulation_error,
         'get_results': get_fba_results,
     }),
@@ -284,7 +312,7 @@ KISAO_ALGORITHMS_PARAMETERS_MAP = collections.OrderedDict([
             'with_reduced_costs': True,
             'return_lp_obj': True,
         },
-        'variables': FBA_DEPENDENT_VARIABLE_TARGETS,
+        'variables': FBA_OUTPUT_VARIABLE_TARGETS,
         'raise_if_simulation_error': raise_if_fba_simulation_error,
         'get_results': get_fba_results,
     }),
@@ -312,7 +340,7 @@ KISAO_ALGORITHMS_PARAMETERS_MAP = collections.OrderedDict([
         'default_args': {
             'return_lp_obj': True,
         },
-        'variables': FBA_DEPENDENT_VARIABLE_TARGETS,
+        'variables': FBA_OUTPUT_VARIABLE_TARGETS,
         'raise_if_simulation_error':
             lambda module_method_args, opt_solution:
                 raise_if_fba_simulation_error(module_method_args, opt_solution[1]),
@@ -343,7 +371,7 @@ KISAO_ALGORITHMS_PARAMETERS_MAP = collections.OrderedDict([
         },
         'default_args': {
         },
-        'variables': FVA_DEPENDENT_VARIABLE_TARGETS,
+        'variables': FVA_OUTPUT_VARIABLE_TARGETS,
         'raise_if_simulation_error': lambda module_method_args, solution: None,
         'get_results': get_fva_results,
     })

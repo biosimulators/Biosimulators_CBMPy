@@ -2,7 +2,7 @@ from biosimulators_cbmpy.data_model import SOLVERS, KISAO_ALGORITHMS_PARAMETERS_
 from biosimulators_cbmpy.utils import (apply_algorithm_change_to_simulation_module_method_args,
                                        apply_variables_to_simulation_module_method_args,
                                        get_simulation_method_args,
-                                       validate_variables, get_results_of_variables,
+                                       validate_variables, get_results_paths_for_variables, get_results_of_variables,
                                        get_default_solver_module_function_args)
 from biosimulators_utils.sedml.data_model import AlgorithmParameterChange, Variable
 from numpy import nan
@@ -122,15 +122,15 @@ class UtilsTestCase(unittest.TestCase):
         # FVA
         module_method_args = {'args': {}}
         expected_module_method_args = {'args': {'selected_reactions': ['A', 'B', 'C']}}
-        apply_variables_to_simulation_module_method_args(target_x_paths_ids, method_props, variables, module_method_args)
-        self.assertEqual(module_method_args, expected_module_method_args)
+        apply_variables_to_simulation_module_method_args(target_x_paths_ids, method_props, variables, module_method_args['args'])
+        self.assertEqual(module_method_args['args'], expected_module_method_args['args'])
 
         # FBA
         method_props = KISAO_ALGORITHMS_PARAMETERS_MAP['KISAO_0000437']
         module_method_args = {'args': {}}
         expected_module_method_args = {'args': {}}
-        apply_variables_to_simulation_module_method_args(target_x_paths_ids, method_props, variables, module_method_args)
-        self.assertEqual(module_method_args, expected_module_method_args)
+        apply_variables_to_simulation_module_method_args(target_x_paths_ids, method_props, variables, module_method_args['args'])
+        self.assertEqual(module_method_args['args'], expected_module_method_args['args'])
 
     def test_get_simulation_method_args(self):
         method_props = KISAO_ALGORITHMS_PARAMETERS_MAP['KISAO_0000437']
@@ -164,6 +164,46 @@ class UtilsTestCase(unittest.TestCase):
 
     def test_validate_variables(self):
         method_props = KISAO_ALGORITHMS_PARAMETERS_MAP['KISAO_0000437']
+
+        model = cbmpy.CBRead.readSBML3FBC(self.MODEL_FILENAME)
+        variable_target_sbml_id_map = {
+            "/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:id='obj']/@value": None,
+            "/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:type='maximize']/@value": None,
+            "/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:id='obj']": None,
+            "/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective/@value": None,
+            "/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective": None,
+            "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']/@flux": 'R_ACALD',
+            "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']/@reducedCost": 'R_ACALD',
+            "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@metaid='R_ACALD']/@flux": 'R_ACALD',
+            "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']": 'R_ACALD',
+            "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@flux": None,
+            "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction": None,
+            "/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@id='M_13dpg_c']/@shadowPrice": 'M_13dpg_c',
+            "/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@metaid='M_13dpg_c']/@shadowPrice": 'M_13dpg_c',
+            "/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@id='M_13dpg_c']": 'M_13dpg_c',
+            "/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species/@shadowPrice": None,
+            "/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species": None,
+        }
+        variable_target_sbml_fbc_id_map = {
+            "/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:id='obj']/@value": 'obj',
+            "/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:type='maximize']/@value": 'obj',
+            "/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:id='obj']": 'obj',
+            "/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective/@value": None,
+            "/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective": None,
+            "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']/@flux": None,
+            "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']/@reducedCost": None,
+            "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@metaid='R_ACALD']/@flux": None,
+            "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']": None,
+            "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@flux": None,
+            "/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction": None,
+            "/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@id='M_13dpg_c']/@shadowPrice": None,
+            "/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@metaid='M_13dpg_c']/@shadowPrice": None,
+            "/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@id='M_13dpg_c']": None,
+            "/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species/@shadowPrice": None,
+            "/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species": None,
+        }      
+        sbml_fbc_uri = self.NAMESPACES['fbc']
+
         variables = [
             Variable(target_namespaces=self.NAMESPACES,
                      target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:id='obj']/@value"),
@@ -171,10 +211,6 @@ class UtilsTestCase(unittest.TestCase):
                      target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:type='maximize']/@value"),
             Variable(target_namespaces=self.NAMESPACES,
                      target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:id='obj']"),
-            Variable(target_namespaces=self.NAMESPACES,
-                     target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective/@value"),
-            Variable(target_namespaces=self.NAMESPACES,
-                     target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective"),
             Variable(target_namespaces=self.NAMESPACES,
                      target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']/@flux"),
             Variable(target_namespaces=self.NAMESPACES,
@@ -184,34 +220,33 @@ class UtilsTestCase(unittest.TestCase):
             Variable(target_namespaces=self.NAMESPACES,
                      target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_ACALD']"),
             Variable(target_namespaces=self.NAMESPACES,
-                     target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction/@flux"),
-            Variable(target_namespaces=self.NAMESPACES,
-                     target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction"),
-            Variable(target_namespaces=self.NAMESPACES,
                      target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@id='M_13dpg_c']/@shadowPrice"),
             Variable(target_namespaces=self.NAMESPACES,
                      target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@metaid='M_13dpg_c']/@shadowPrice"),
             Variable(target_namespaces=self.NAMESPACES,
                      target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@id='M_13dpg_c']"),
-            Variable(target_namespaces=self.NAMESPACES,
-                     target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species/@shadowPrice"),
-            Variable(target_namespaces=self.NAMESPACES,
-                     target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species"),
         ]
-        validate_variables(method_props, variables)
+        validate_variables(model, method_props, variables, variable_target_sbml_id_map, variable_target_sbml_fbc_id_map, sbml_fbc_uri)
 
         variables = [
             Variable(symbol='urn:sedml:symbol:time'),
         ]
         with self.assertRaises(NotImplementedError):
-            validate_variables(method_props, variables)
+            validate_variables(model, method_props, variables, variable_target_sbml_id_map, variable_target_sbml_fbc_id_map, sbml_fbc_uri)
 
         variables = [
             Variable(target_namespaces=self.NAMESPACES,
                      target="/sbml:sbml/sbml:model/sbml:listOfCompartments/sbml:compartment[@id='c']")
         ]
         with self.assertRaises(ValueError):
-            validate_variables(method_props, variables)
+            validate_variables(model, method_props, variables, variable_target_sbml_id_map, variable_target_sbml_fbc_id_map, sbml_fbc_uri)
+
+        variables = [
+            Variable(target_namespaces=self.NAMESPACES,
+                     target="/sbml:sbml/sbml:model/sbml:listOfCompartments/sbml:compartment[@id='c']/@sbml:name")
+        ]
+        with self.assertRaises(ValueError):
+            validate_variables(model, method_props, variables, variable_target_sbml_id_map, variable_target_sbml_fbc_id_map, sbml_fbc_uri)
 
     def test_get_results_of_variables(self):
         method_props = KISAO_ALGORITHMS_PARAMETERS_MAP['KISAO_0000437']
@@ -260,8 +295,9 @@ class UtilsTestCase(unittest.TestCase):
             getActiveObjective=lambda: mock.Mock(id='obj'),
             getObjFuncValue=lambda: 0.8739215069684909,
             getReactionValues=lambda: {'R_ACALD': 1.250555e-12},
+            objectives=[mock.Mock(id='obj'), mock.Mock(id='inactive_obj')],
             species=[mock.Mock(id='M_13dpg_c'), mock.Mock(id='M_2pg_c')],
-            reactions=[mock.Mock(id='R_ACALD')],
+            reactions=[mock.Mock(id='R_ACALD'), mock.Mock(id='R_PGI'), mock.Mock(id='R_PPC')],
         )
 
         # FBA, GLPK
@@ -274,7 +310,8 @@ class UtilsTestCase(unittest.TestCase):
             )
         }
         solution = None
-        result = get_results_of_variables(target_to_id, target_to_fbc_id, method_props, solver, variables, model, solution)
+        target_results_path_map = get_results_paths_for_variables(model, method_props, variables, target_to_id, target_to_fbc_id)
+        result = get_results_of_variables(target_results_path_map, method_props, solver, variables, model, solution)
         self.assertEqual(set(result.keys()), set(var.id for var in variables))
         numpy.testing.assert_allclose(result['obj'], numpy.array(0.8739215069684909))
         numpy.testing.assert_allclose(result['inactive_obj'], numpy.array(nan))
@@ -299,7 +336,8 @@ class UtilsTestCase(unittest.TestCase):
             )
         }
         solution = None
-        result = get_results_of_variables(target_to_id, target_to_fbc_id, method_props, solver, variables, model, solution)
+        target_results_path_map = get_results_paths_for_variables(model, method_props, variables, target_to_id, target_to_fbc_id)
+        result = get_results_of_variables(target_results_path_map, method_props, solver, variables, model, solution)
         self.assertEqual(set(result.keys()), set(var.id for var in variables))
         numpy.testing.assert_allclose(result['obj'], numpy.array(0.8739215069684909))
         numpy.testing.assert_allclose(result['inactive_obj'], numpy.array(nan))
@@ -318,7 +356,8 @@ class UtilsTestCase(unittest.TestCase):
             'module': mock.Mock()
         }
         solution = (None, None)
-        result = get_results_of_variables(target_to_id, target_to_fbc_id, method_props, solver, variables, model, solution)
+        target_results_path_map = get_results_paths_for_variables(model, method_props, variables, target_to_id, target_to_fbc_id)
+        result = get_results_of_variables(target_results_path_map, method_props, solver, variables, model, solution)
         self.assertEqual(set(result.keys()), set(var.id for var in variables))
         numpy.testing.assert_allclose(result['obj'], numpy.array(0.8739215069684909))
         numpy.testing.assert_allclose(result['inactive_obj'], numpy.array(nan))
@@ -356,7 +395,8 @@ class UtilsTestCase(unittest.TestCase):
             ),
             ['R_ACALD', 'R_PGI', 'R_PPC']
         )
-        result = get_results_of_variables(target_to_id, target_to_fbc_id, method_props, solver, variables, model, solution)
+        target_results_path_map = get_results_paths_for_variables(model, method_props, variables, target_to_id, target_to_fbc_id)
+        result = get_results_of_variables(target_results_path_map, method_props, solver, variables, model, solution)
         numpy.testing.assert_allclose(result['R_PGI_min_flux'], numpy.array(-15.))
         numpy.testing.assert_allclose(result['R_PGI_max_flux'], numpy.array(25.))
 

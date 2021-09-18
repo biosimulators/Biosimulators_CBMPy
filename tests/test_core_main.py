@@ -285,6 +285,89 @@ class CliTestCase(unittest.TestCase):
             for var_id, result in variable_results.items():
                 numpy.testing.assert_allclose(result, numpy.array(expected_results[var_id]), rtol=1e-4, atol=1e-8)
 
+    def test_exec_sed_task_with_changes(self):
+        task = sedml_data_model.Task(
+            model=sedml_data_model.Model(
+                source=os.path.join(os.path.dirname(__file__), 'fixtures', 'textbook.xml'),
+                language=sedml_data_model.ModelLanguage.SBML.value,
+            ),
+            simulation=sedml_data_model.SteadyStateSimulation(
+                algorithm=sedml_data_model.Algorithm(
+                    kisao_id='KISAO_0000437',
+                    changes=[
+                        sedml_data_model.AlgorithmParameterChange(
+                            kisao_id='KISAO_0000553',
+                            new_value='GLPK',
+                        ),
+                    ],
+                ),
+            ),
+        )
+
+        variables = [
+            sedml_data_model.Variable(
+                id='active_objective',
+                target="/sbml:sbml/sbml:model/fbc:listOfObjectives/fbc:objective[@fbc:id='obj']/@value",
+                target_namespaces=self.NAMESPACES,
+                task=task),
+        ]
+
+        task.model.changes.append(sedml_data_model.ModelAttributeChange(
+            target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_EX_glc__D_e']/@fbc:lowerFluxBound",
+            target_namespaces=self.NAMESPACES,
+            new_value=-1,
+        ))
+        task.model.changes.append(sedml_data_model.ModelAttributeChange(
+            target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_EX_glc__D_e']/@fbc:upperFluxBound",
+            target_namespaces=self.NAMESPACES,
+            new_value=-1,
+        ))
+        preprocessed_task = core.preprocess_sed_task(task, variables)
+
+        task.model.changes = []
+        results, _ = core.exec_sed_task(task, variables, preprocessed_task=preprocessed_task)
+        numpy.testing.assert_allclose(results['active_objective'], 0.8739215069684301)
+
+        task.model.changes = [
+            sedml_data_model.ModelAttributeChange(
+                target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_EX_glc__D_e']/@fbc:lowerFluxBound",
+                target_namespaces=self.NAMESPACES,
+                new_value=-1,
+            ),
+        ]
+        results2, _ = core.exec_sed_task(task, variables, preprocessed_task=preprocessed_task)
+        numpy.testing.assert_allclose(results2['active_objective'], 0.048384972296965874)
+
+        task.model.changes = [
+            sedml_data_model.ModelAttributeChange(
+                target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_EX_glc__D_e']/@fbc:lowerFluxBound",
+                target_namespaces=self.NAMESPACES,
+                new_value='-1',
+            ),
+        ]
+        results2, _ = core.exec_sed_task(task, variables, preprocessed_task=preprocessed_task)
+        numpy.testing.assert_allclose(results2['active_objective'], 0.048384972296965874)
+
+        task.model.changes = [
+            sedml_data_model.ModelAttributeChange(
+                target="/sbml:sbml/sbml:model/sbml:listOfReactions/sbml:reaction[@id='R_EX_glc__D_e']/@id",
+                target_namespaces=self.NAMESPACES,
+                new_value=-1,
+            ),
+        ]
+        with self.assertRaises(ValueError):
+            core.preprocess_sed_task(task, variables)
+
+        task.model.changes = [
+            sedml_data_model.ModelAttributeChange(
+                target="/sbml:sbml/sbml:model/sbml:listOfSpecies/sbml:species[@id='M_13dpg_c']",
+                target_namespaces=self.NAMESPACES,
+                new_value=-1,
+            ),
+        ]
+        with self.assertRaises(ValueError):
+            core.preprocess_sed_task(task, variables)
+
     def test_exec_sed_task_error_handling_unsupported_algorithm(self):
         task = sedml_data_model.Task(
             model=sedml_data_model.Model(
