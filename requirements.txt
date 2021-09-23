@@ -5,4 +5,4 @@ kisao
 lxml
 numpy
 python_libsbml
-sympy != 1.8 # CBMPy requires a microversion number
+sympy != 1.8, != 1.9 # CBMPy requires a microversion number
