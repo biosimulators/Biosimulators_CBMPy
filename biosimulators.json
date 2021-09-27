@@ -17,6 +17,12 @@
     },
     "operatingSystemType": "Linux"
   },
+  "cli": {
+    "packageRepository": "PyPI",
+    "package": "biosimulators-cbmpy",
+    "command": "biosimulators-cbmpy",
+    "installationInstructions": "https://docs.biosimulators.org/Biosimulators_CBMPy/installation.html"
+  },
   "pythonApi": {
     "package": "biosimulators-cbmpy",
     "module": "biosimulators_cbmpy",
