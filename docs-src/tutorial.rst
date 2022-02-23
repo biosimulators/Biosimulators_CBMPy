@@ -7,7 +7,7 @@ BioSimulators-CBMPy is available as a command-line program and as a command-line
 Creating COMBINE/OMEX archives and encoding simulation experiments into SED-ML
 ------------------------------------------------------------------------------
 
-Information about how to create COMBINE/OMEX archives which can be executed by BioSimulators-CBMPy is available `here <`https://docs.biosimulations.org/users/creating-projects/>`_.
+Information about how to create COMBINE/OMEX archives which can be executed by BioSimulators-CBMPy is available `here <https://docs.biosimulations.org/users/creating-projects/>`_.
 
 A list of the algorithms and algorithm parameters supported by CBMPy is available at `BioSimulators <https://biosimulators.org/simulators/cbmpy>`_.
 
